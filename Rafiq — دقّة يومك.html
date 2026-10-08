@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>Rafiq — دقّة يومك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060706;
+    --bg-2:#0A0C0A;
+    --surface: rgba(255,255,255,0.045);
+    --surface-solid:#121412;
+    --surface-alt: rgba(255,255,255,0.03);
+    --text:#F1F5F1;
+    --text-soft:#A6AFA6;
+    --text-faint:#666E66;
+    --border: rgba(255,255,255,0.09);
+    --brand:#22C55E;
+    --brand-2:#16A34A;
+    --brand-grad: linear-gradient(135deg,#4ADE80 0%,#16A34A 100%);
+    --brand-soft: rgba(34,197,94,0.14);
+    --brand-glow: rgba(34,197,94,0.45);
+    --urgent:#FF5C72; --urgent-soft: rgba(255,92,114,0.14);
+    --important:#FFB84D; --important-soft: rgba(255,184,77,0.14);
+    --extra:#38BDF8; --extra-soft: rgba(56,189,248,0.14);
+    --gold:#E8B44C; --gold-soft: rgba(232,180,76,0.14); --gold-glow: rgba(232,180,76,0.4);
+    --ring-track: rgba(255,255,255,0.07);
+    --shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+    --shadow-sm: 0 8px 22px -12px rgba(0,0,0,0.55);
+    --font-display:'Space Grotesk','IBM Plex Sans Arabic', sans-serif;
+    --font:'IBM Plex Sans Arabic','Space Grotesk', sans-serif;
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+  }
+  :root[data-theme="light"]{
+    --bg:#F6F9F6; --bg-2:#EFF5EF;
+    --surface:#FFFFFF; --surface-solid:#FFFFFF; --surface-alt:#EFF5EF;
+    --text:#101410; --text-soft:#5B6459; --text-faint:#98A398;
+    --border: rgba(10,20,10,0.09);
+    --brand:#16A34A; --brand-2:#15803D;
+    --brand-grad: linear-gradient(135deg,#22C55E 0%,#15803D 100%);
+    --brand-soft: rgba(22,163,74,0.10); --brand-glow: rgba(22,163,74,0.25);
+    --urgent:#E23F3F; --urgent-soft:#FDE8E8;
+    --important:#DB9A17; --important-soft:#FCF1D8;
+    --extra:#0284C7; --extra-soft:#E0F2FE;
+    --gold:#B8860B; --gold-soft:#FBF0D9; --gold-glow: rgba(184,134,11,0.25);
+    --ring-track: rgba(10,20,10,0.08);
+    --shadow: 0 10px 30px -14px rgba(20,40,20,0.18);
+    --shadow-sm: 0 4px 14px -8px rgba(20,40,20,0.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(34,197,94,0.14), transparent 60%),
+      radial-gradient(700px 500px at 100% 0%, rgba(56,189,248,0.08), transparent 55%),
+      var(--bg);
+    font-family:var(--font); color:var(--text); -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .hidden{ display:none !important; }
+  .app-shell{ display:flex; flex-direction:column; min-height:100vh; max-width:1200px; margin:0 auto; }
+  .main-area{ display:flex; flex-direction:column; flex:1; order:1; min-width:0; }
+  .content-scroll{ flex:1; overflow-y:auto; padding:18px 16px 90px; display:flex; flex-direction:column; }
+
+  /* topbar */
+  .topbar{ display:flex; align-items:center; justify-content:space-between; padding:16px 16px 4px; position:relative; }
+  .topbar .who{ display:flex; align-items:center; gap:10px; }
+  .avatar{ width:38px; height:38px; border-radius:50%; background:var(--brand-grad); display:flex; align-items:center; justify-content:center; color:#0A0D18; font-weight:700; font-size:15px; flex:0 0 auto; box-shadow:0 0 0 1px var(--border), 0 6px 18px -6px var(--brand-glow); border:none; cursor:pointer; padding:0; }
+  .who .name{ font-family:var(--font-display); font-weight:700; font-size:15.5px; letter-spacing:.2px; }
+  .who .sub{ font-size:12px; color:var(--text-faint); }
+  .topbar-actions{ display:flex; align-items:center; gap:8px; }
+  .lang-toggle{ appearance:none; border:1px solid var(--border); background:var(--surface); backdrop-filter: blur(14px); color:var(--text-soft); border-radius:999px; padding:8px 15px; font-family:var(--font); font-weight:600; font-size:12.5px; cursor:pointer; }
+  .lang-toggle:hover{ border-color:var(--brand); color:var(--brand); }
+  .icon-toggle{ appearance:none; border:1px solid var(--border); background:var(--surface); backdrop-filter: blur(14px); color:var(--text-soft); border-radius:999px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; flex:0 0 auto; }
+  .icon-toggle:hover{ border-color:var(--brand); color:var(--brand); }
+
+  /* settings menu */
+  .settings-menu{ position:absolute; top:60px; inset-inline-end:16px; background:var(--surface-solid); border:1px solid var(--border); border-radius:var(--radius-md); box-shadow:var(--shadow); padding:7px; display:none; flex-direction:column; min-width:190px; z-index:30; }
+  .settings-menu.open{ display:flex; }
+  .settings-item{ padding:10px 12px; border-radius:9px; font-size:13.5px; text-align:start; background:none; border:none; cursor:pointer; color:var(--text); display:flex; align-items:center; gap:9px; font-family:var(--font); }
+  .settings-item:hover{ background:var(--surface-alt); }
+  .settings-item.danger{ color:var(--urgent); }
+
+  /* screens */
+  .screen{ display:none; }
+  .screen.active{ display:flex; flex-direction:column; gap:16px; }
+  h1,h2,h3{ margin:0; }
+  .page-title{ font-family:var(--font-display); font-size:30px; font-weight:700; line-height:1.2; letter-spacing:-0.3px;
+    background: linear-gradient(90deg, var(--text) 30%, var(--brand-2) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .page-sub{ font-size:13px; color:var(--text-faint); margin-top:2px; font-weight:500; letter-spacing:.3px; }
+  .section-label{ font-size:12.5px; font-weight:700; color:var(--text-soft); display:flex; align-items:center; gap:6px; text-transform:none; }
+
+  /* hero */
+  .hero{ position:relative; padding:26px 4px 6px; overflow:visible; animation: heroIn .7s cubic-bezier(.2,.8,.2,1); }
+  .hero-glow{ position:absolute; inset-inline-start:-30px; top:-60px; width:230px; height:230px; border-radius:50%;
+    background: radial-gradient(circle, var(--brand-glow) 0%, transparent 70%); filter: blur(10px); pointer-events:none; z-index:-1; }
+  @keyframes heroIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+
+  .ring-hero{ position:relative; width:172px; height:172px; margin:2px auto 8px; }
+  .ring-svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .ring-track{ fill:none; stroke:var(--ring-track); stroke-width:11; }
+  .ring-fill{ fill:none; stroke:var(--brand); stroke-width:11; stroke-linecap:round; stroke-dasharray:439.8; stroke-dashoffset:439.8; transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1); filter:drop-shadow(0 0 9px var(--brand-glow)); }
+  .ring-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
+  .ring-pct{ font-family:var(--font-display); font-size:36px; font-weight:700; letter-spacing:-0.5px; }
+  .ring-label{ font-size:11.5px; color:var(--text-faint); text-align:center; padding:0 26px; line-height:1.5; }
+  .info-modal-body{ font-size:13.5px; line-height:1.9; color:var(--text-soft); max-height:50vh; overflow-y:auto; text-align:start; }
+  .info-modal-body p{ margin:0 0 12px; }
+  .info-modal-body strong{ color:var(--text); }
+  .pledge-sign{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); font-family:var(--font-display); font-size:15px; color:var(--gold); text-align:center; }
+
+  /* stat cards */
+  .stat-row{ display:flex; gap:10px; overflow-x:auto; padding-bottom:2px; }
+  .stat-card{ flex:1 0 118px; background:var(--surface); backdrop-filter: blur(18px); border-radius:var(--radius-md); padding:15px; box-shadow:var(--shadow-sm); border:1px solid var(--border); }
+  .stat-card .ic{ width:30px; height:30px; border-radius:9px; background:var(--brand-soft); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:15px; margin-bottom:9px; }
+  .stat-card .val{ font-family:var(--font-display); font-size:20px; font-weight:700; }
+  .stat-card .lbl{ font-size:11px; color:var(--text-faint); margin-top:1px; }
+
+  /* generic card */
+  .card{ background:var(--surface); backdrop-filter: blur(18px); border-radius:var(--radius-lg); padding:17px; box-shadow:var(--shadow-sm); border:1px solid var(--border); }
+
+  /* schedule timeline */
+  .timeline{ display:flex; flex-direction:column; }
+  .tl-row{ display:flex; align-items:center; gap:12px; padding:10px 0; position:relative; }
+  .tl-dot{ width:9px; height:9px; border-radius:50%; background:var(--brand); flex:0 0 auto; box-shadow:0 0 0 4px var(--brand-soft), 0 0 10px var(--brand-glow); }
+  .tl-row:not(:last-child):after{ content:""; position:absolute; inset-inline-start:4px; top:23px; bottom:-10px; width:1.5px; background:var(--border); }
+  .tl-label{ font-size:14px; font-weight:600; flex:1; }
+  .tl-time{ font-size:12.5px; color:var(--text-faint); font-variant-numeric:tabular-nums; font-family:var(--font-display); }
+
+  /* priority badges/cards */
+  .priority-list{ display:flex; flex-direction:column; gap:9px; }
+  .priority-card{ display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-sm); background:var(--tier-soft, var(--brand-soft)); border:1px solid var(--border); }
+  .badge{ font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:999px; color:#0A0D18; background:var(--tier-color, var(--brand)); flex:0 0 auto; }
+  .priority-card .txt{ font-size:14px; font-weight:500; }
+
+  .note-card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 16px; font-size:13.5px; color:var(--text-soft); line-height:1.7; }
+
+  /* tasks */
+  textarea.brain{ width:100%; min-height:88px; resize:vertical; background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px 14px; font-family:var(--font); font-size:14px; color:var(--text); line-height:1.7; }
+  textarea.brain::placeholder{ color:var(--text-faint); }
+  .btn{ appearance:none; border:none; cursor:pointer; font-family:var(--font); font-size:14px; font-weight:700; border-radius:999px; padding:13px 22px; background:var(--brand-grad); color:#0A0D18; box-shadow:0 10px 26px -10px var(--brand-glow); width:100%; }
+  .btn:disabled{ opacity:.55; cursor:default; box-shadow:none; }
+  .btn.ghost{ background:none; color:var(--text-soft); border:1px solid var(--border); box-shadow:none; }
+  .tier-group{ display:flex; flex-direction:column; gap:8px; }
+  .tier-heading{ font-size:12px; font-weight:700; color:var(--text-soft); display:flex; align-items:center; gap:6px; }
+  .task-row{ display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:var(--radius-sm); background:var(--tier-soft); border:1px solid var(--border); }
+  .task-row.done{ opacity:.5; }
+  .task-row.done .task-text{ text-decoration:line-through; }
+  .task-row input[type=checkbox]{ margin-top:3px; accent-color:var(--brand); width:16px; height:16px; }
+  .task-text{ font-size:14px; font-weight:500; }
+  .task-reason{ font-size:11.5px; color:var(--text-faint); margin-top:2px; }
+
+  /* review */
+  .mood-row{ display:flex; gap:8px; }
+  .mood-btn{ flex:1; border:1px solid var(--border); background:var(--surface); border-radius:var(--radius-md); padding:12px 0; font-size:21px; cursor:pointer; }
+  .mood-btn.active{ border-color:var(--brand); background:var(--brand-soft); box-shadow:0 0 0 1px var(--brand) inset; }
+  .check-list{ display:flex; flex-direction:column; }
+  .check-row{ display:flex; align-items:center; gap:10px; font-size:14px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .check-row:last-child{ border-bottom:none; }
+  .check-row input{ accent-color:var(--brand); width:16px; height:16px; }
+  .ai-card{ border-radius:var(--radius-md); padding:15px 16px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); }
+  .ai-tag{ display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; color:#0A0D18; background:var(--brand-grad); padding:5px 10px; border-radius:999px; margin-bottom:10px; }
+  .ai-text{ font-size:14px; line-height:1.8; }
+  input.qinput{ width:100%; border:1px solid var(--border); background:var(--surface-alt); border-radius:var(--radius-sm); padding:11px 13px; font-family:var(--font); font-size:13.5px; color:var(--text); }
+
+  /* goals */
+  .goal-area-card{ display:flex; flex-direction:column; gap:13px; }
+  .goal-area-card h3{ font-family:var(--font-display); font-size:15px; font-weight:700; }
+  .goal-item{ display:flex; flex-direction:column; gap:7px; }
+  .goal-item .row1{ display:flex; align-items:center; justify-content:space-between; }
+  .goal-item .t{ font-size:13.5px; font-weight:500; }
+  .goal-item .pct{ font-size:12px; color:var(--brand-2); font-weight:700; font-family:var(--font-display); }
+  .progress-track{ height:7px; border-radius:999px; background:var(--surface-alt); overflow:hidden; }
+  .progress-fill{ height:100%; border-radius:999px; background:var(--brand-grad); box-shadow:0 0 10px var(--brand-glow); }
+  .goal-item .actions{ display:flex; justify-content:flex-end; }
+  .add-btn{ width:23px; height:23px; border-radius:50%; border:1px solid var(--border); background:var(--surface-alt); color:var(--text-soft); font-size:13px; cursor:pointer; line-height:1; }
+
+  /* coach */
+  #screen-coach.active{ height:100%; }
+  .chat{ flex:1; display:flex; flex-direction:column; gap:10px; }
+  .bubble-row{ display:flex; align-items:flex-end; gap:8px; }
+  .bubble-row.me{ flex-direction:row-reverse; }
+  .mini-avatar{ width:26px; height:26px; border-radius:50%; background:var(--brand-grad); flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:12px; color:#0A0D18; }
+  .bubble{ max-width:78%; padding:11px 15px; border-radius:16px; font-size:13.5px; line-height:1.7; }
+  .bubble.coach{ background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); border-bottom-right-radius:4px; }
+  .bubble.me{ background:var(--brand-grad); color:#0A0D18; font-weight:500; border-bottom-left-radius:4px; }
+  .chat-input-row{ display:flex; gap:8px; padding-top:10px; position:sticky; bottom:0; background:linear-gradient(180deg, transparent, var(--bg) 30%); }
+  .chat-input-row input{ flex:1; border:1px solid var(--border); background:var(--surface-solid); border-radius:999px; padding:13px 18px; font-family:var(--font); font-size:13.5px; color:var(--text); }
+  .chat-input-row button{ width:44px; height:44px; border-radius:50%; border:none; background:var(--brand-grad); color:#0A0D18; font-size:16px; cursor:pointer; flex:0 0 auto; box-shadow:0 8px 20px -8px var(--brand-glow); }
+
+  /* nav */
+  .tabbar{ order:2; display:flex; border-top:1px solid var(--border); background:var(--surface-solid); padding:8px 8px calc(8px + env(safe-area-inset-bottom)); position:sticky; bottom:0; z-index:5; }
+  .tab-btn{ flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; cursor:pointer; padding:7px 2px; color:var(--text-faint); font-family:var(--font); font-size:10.5px; font-weight:600; border-radius:14px; transition:color .15s, background .15s; }
+  .tab-btn svg{ width:20px; height:20px; }
+  .tab-btn.active{ color:var(--brand); background:var(--brand-soft); }
+
+  @media (min-width:900px){
+    .app-shell{ flex-direction:row; padding:24px 20px; gap:20px; }
+    .tabbar{ order:0; flex-direction:column; width:220px; flex:0 0 220px; height:fit-content; position:sticky; top:24px; border-top:none; border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 10px; box-shadow:var(--shadow-sm); gap:2px; backdrop-filter: blur(18px); }
+    .tab-btn{ flex-direction:row; justify-content:flex-start; gap:10px; padding:11px 12px; font-size:13.5px; }
+    .tab-btn.active{ background:var(--brand-soft); }
+    .main-area{ order:1; }
+    .content-scroll{ padding-bottom:24px; }
+  }
+
+  /* ===== overlay screens: auth + onboarding ===== */
+  .overlay-screen{ position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center; padding:24px;
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(34,197,94,0.14), transparent 60%),
+      radial-gradient(700px 500px at 100% 0%, rgba(56,189,248,0.08), transparent 55%),
+      var(--bg);
+    overflow-y:auto; }
+  .forgot-row{ display:flex; justify-content:flex-end; margin-top:-3px; }
+  .auth-link{ color:var(--brand); font-size:12px; cursor:pointer; text-decoration:none; font-weight:600; }
+  .auth-toggle-mode{ text-align:center; font-size:13px; margin:0; }
+  .auth-toggle-mode .auth-link{ font-size:13px; }
+  .auth-box{ width:100%; max-width:380px; display:flex; flex-direction:column; gap:14px; animation: heroIn .5s cubic-bezier(.2,.8,.2,1); }
+  .auth-logo{ width:56px; height:56px; border-radius:18px; background:var(--brand-grad); display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 4px; box-shadow:0 10px 26px -10px var(--brand-glow); }
+  .auth-title{ font-family:var(--font-display); font-size:23px; font-weight:700; text-align:center; }
+  .auth-sub{ font-size:13px; color:var(--text-faint); text-align:center; margin-top:-8px; line-height:1.6; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:12.5px; font-weight:600; color:var(--text-soft); }
+  .field input{ border:1px solid var(--border); background:var(--surface-alt); border-radius:var(--radius-sm); padding:12px 14px; font-family:var(--font); font-size:14px; color:var(--text); width:100%; }
+  .field input:focus{ outline:none; border-color:var(--brand); }
+  .auth-error{ font-size:12.5px; color:var(--urgent); min-height:16px; text-align:center; }
+  .auth-switch{ text-align:center; font-size:12.5px; color:var(--text-faint); }
+  .auth-switch a{ color:var(--brand); cursor:pointer; font-weight:600; text-decoration:none; }
+  .auth-hint{ text-align:center; font-size:11.5px; color:var(--text-faint); line-height:1.6; }
+
+  .onboard-progress{ display:flex; gap:6px; justify-content:center; margin-bottom:2px; }
+  .onboard-dot{ width:6px; height:6px; border-radius:50%; background:var(--border); transition:.2s; }
+  .onboard-dot.active{ background:var(--brand); width:20px; border-radius:999px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .chip{ border:1px solid var(--border); background:var(--surface); border-radius:999px; padding:11px 17px; font-size:13.5px; cursor:pointer; color:var(--text); font-family:var(--font); }
+  .chip.active{ border-color:var(--brand); background:var(--brand-soft); color:var(--brand); font-weight:700; }
+  .onboard-nav{ display:flex; gap:10px; margin-top:4px; }
+  .onboard-nav .btn{ flex:1; }
+  .ob-step-in{ animation: heroIn .38s cubic-bezier(.2,.8,.2,1); display:flex; flex-direction:column; gap:14px; }
+
+  /* ===== dynamic editable lists (goals/skills/habits/schedule) ===== */
+  .mini-input{ border:1px solid var(--border); background:var(--surface-alt); border-radius:10px; padding:10px 12px; font-family:var(--font); font-size:13.5px; color:var(--text); width:100%; }
+  .mini-input:focus{ outline:none; border-color:var(--brand); }
+  .add-row{ display:flex; gap:8px; }
+  .add-row .mini-input{ flex:1; }
+  .add-row .add-go{ width:42px; height:42px; flex:0 0 auto; border-radius:12px; border:none; background:var(--brand-grad); color:#0A0D18; font-size:18px; font-weight:700; cursor:pointer; }
+  .list-row{ display:flex; align-items:center; gap:10px; padding:11px 13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); font-size:13.5px; }
+  .list-row .lr-text{ flex:1; }
+  .list-row .lr-del{ background:none; border:none; color:var(--text-faint); font-size:16px; cursor:pointer; flex:0 0 auto; line-height:1; padding:2px 4px; }
+  .list-row .lr-del:hover{ color:var(--urgent); }
+  .list-row .lr-log{ background:var(--brand-soft); color:var(--brand); border:none; border-radius:999px; padding:6px 12px; font-size:11.5px; font-weight:700; cursor:pointer; flex:0 0 auto; font-family:var(--font); }
+  .empty-hint{ font-size:12.5px; color:var(--text-faint); padding:4px 2px; }
+
+  .skill-row{ display:flex; flex-direction:column; gap:9px; padding:13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .skill-row .sr-top{ display:flex; align-items:center; justify-content:space-between; }
+  .skill-row .sr-name{ font-size:13.5px; font-weight:700; }
+  .skill-row .sr-meta{ font-size:11.5px; color:var(--text-faint); }
+  .skill-row .sr-bump{ background:var(--brand-grad); color:#0A0D18; border:none; border-radius:999px; width:26px; height:26px; font-size:14px; font-weight:700; cursor:pointer; flex:0 0 auto; }
+
+  /* skills: mini progress ring */
+  .skill-row-v2{ display:flex; align-items:center; gap:13px; padding:13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .mini-ring-wrap{ position:relative; width:48px; height:48px; flex:0 0 auto; }
+  .mini-ring-svg{ transform:rotate(-90deg); }
+  .mini-ring-track{ fill:none; stroke:var(--ring-track); }
+  .mini-ring-fill{ fill:none; stroke:var(--brand); stroke-linecap:round; transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1); }
+  .mini-ring-pct{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:11px; font-weight:700; }
+  .skill-info{ flex:1; display:flex; flex-direction:column; gap:7px; min-width:0; }
+  .sr-name{ font-size:13.5px; font-weight:700; }
+
+  /* goals: session dot track */
+  .goal-row-v2{ display:flex; flex-direction:column; gap:9px; padding:12px 13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .gr-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .gr-bottom{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .session-dots{ display:flex; gap:6px; align-items:center; }
+  .s-dot{ width:11px; height:11px; border-radius:50%; background:var(--ring-track); flex:0 0 auto; }
+  .s-dot.filled{ background:var(--brand-grad); box-shadow:0 0 6px var(--brand-glow); }
+  .s-extra{ font-size:10.5px; color:var(--text-faint); font-weight:700; margin-inline-start:4px; }
+
+  .habit-row{ display:flex; align-items:center; gap:10px; padding:11px 13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .habit-tag{ font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px; flex:0 0 auto; }
+  .habit-tag.build{ background:var(--extra-soft); color:var(--extra); }
+  .habit-tag.quit{ background:var(--urgent-soft); color:var(--urgent); }
+  .type-toggle{ display:flex; gap:6px; }
+  .type-toggle button{ flex:1; border:1px solid var(--border); background:var(--surface); border-radius:10px; padding:9px 0; font-size:12.5px; font-weight:600; color:var(--text-soft); cursor:pointer; font-family:var(--font); }
+  .type-toggle button.active{ border-color:var(--brand); background:var(--brand-soft); color:var(--brand); }
+
+  /* habits: 7-day streak tracker */
+  .habit-row-v2{ display:flex; flex-direction:column; gap:9px; padding:12px 13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .hr-top{ display:flex; align-items:center; gap:8px; }
+  .streak-badge{ font-size:11px; font-weight:700; color:var(--gold); flex:0 0 auto; }
+  .hr-bottom{ display:flex; justify-content:center; }
+  .week-dots{ display:flex; gap:7px; }
+
+  /* calendar */
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin:10px 0; }
+  .cal-dow{ font-size:10px; color:var(--text-faint); text-align:center; font-weight:700; }
+  .cal-day{ aspect-ratio:1; border-radius:9px; background:var(--surface-alt); border:1px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:12px; cursor:pointer; position:relative; }
+  .cal-day.empty{ background:none; border:none; cursor:default; }
+  .cal-day.today{ border-color:var(--brand); }
+  .cal-day.has-items::after{ content:""; position:absolute; bottom:4px; width:4px; height:4px; border-radius:50%; background:var(--brand); }
+  .cal-day.selected{ background:var(--brand-soft); border-color:var(--brand); }
+
+  /* agenda cards */
+  .agenda-card{ display:flex; align-items:center; gap:11px; padding:12px 13px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); cursor:pointer; }
+  .agenda-card .ac-date{ display:flex; flex-direction:column; align-items:center; justify-content:center; width:44px; flex:0 0 auto; background:var(--surface); border-radius:9px; padding:6px 0; }
+  .agenda-card .ac-date .d{ font-family:var(--font-display); font-size:16px; font-weight:700; line-height:1; }
+  .agenda-card .ac-date .m{ font-size:9.5px; color:var(--text-faint); }
+  .agenda-card .ac-info{ flex:1; min-width:0; }
+  .agenda-card .ac-title{ font-size:13.5px; font-weight:700; }
+  .agenda-card .ac-meta{ font-size:11px; color:var(--text-faint); margin-top:2px; }
+  .agenda-card.done .ac-title{ text-decoration:line-through; opacity:.55; }
+  .agenda-card .ac-check{ width:20px; height:20px; accent-color:var(--brand); flex:0 0 auto; }
+  .assignee-badge{ font-size:10px; font-weight:700; color:var(--brand); background:var(--brand-soft); padding:3px 9px; border-radius:999px; flex:0 0 auto; white-space:nowrap; }
+  .member-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--surface-alt); border:1px solid var(--border); }
+  .member-avatar{ width:30px; height:30px; border-radius:50%; background:var(--brand-grad); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#0A0D18; flex:0 0 auto; }
+  .skill-tag{ font-size:10.5px; font-weight:700; color:var(--gold); background:var(--gold-soft); padding:3px 9px; border-radius:999px; }
+  .neglect-badge{ font-size:10.5px; font-weight:700; color:var(--urgent); background:var(--urgent-soft); padding:3px 9px; border-radius:999px; }
+  .skill-select{ border:1px solid var(--border); background:var(--surface-alt); border-radius:10px; padding:9px 10px; font-family:var(--font); font-size:12.5px; color:var(--text-soft); width:100%; margin-top:6px; }
+  .prio-badge{ font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:999px; flex:0 0 auto; }
+  .prio-badge.low{ background:var(--extra-soft); color:var(--extra); }
+  .prio-badge.medium{ background:var(--important-soft); color:var(--important); }
+  .prio-badge.high{ background:var(--urgent-soft); color:var(--urgent); }
+  .rec-badge{ font-size:10px; color:var(--gold); }
+  .w-dot{ width:16px; height:16px; border-radius:50%; background:var(--ring-track); border:1.5px solid transparent; }
+  .w-dot.filled{ background:var(--brand-grad); box-shadow:0 0 6px var(--brand-glow); }
+  .w-dot.today{ border-color:var(--brand); }
+
+  .subsection-title{ font-family:var(--font-display); font-size:15px; font-weight:700; margin:2px 0 2px; display:flex; align-items:center; justify-content:space-between; }
+  .subsection-title span.count{ font-size:11px; font-weight:700; color:var(--text-faint); background:var(--surface-alt); padding:3px 8px; border-radius:999px; }
+
+  .today-priorities-chips{ display:flex; flex-wrap:wrap; gap:7px; }
+  .today-priorities-chips .chip-static{ background:var(--brand-soft); color:var(--brand); border:1px solid var(--border); border-radius:999px; padding:7px 13px; font-size:12.5px; font-weight:600; }
+  .sched-del{ background:none; border:none; color:var(--text-faint); font-size:14px; cursor:pointer; flex:0 0 auto; }
+  .ai-status-note{ background:var(--important-soft); color:var(--important); border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 14px; font-size:12.5px; line-height:1.7; }
+  #authOtp{ text-align:center; font-family:var(--font-display); font-size:22px; letter-spacing:8px; font-weight:700; }
+  .add-sched-row{ display:flex; gap:8px; margin-top:8px; }
+  .add-sched-row input{ flex:1; }
+  .add-sched-row input.add-sched-time{ flex:0 0 92px; width:92px; }
+</style>
+</head>
+<body>
+
+<!-- ===== ONBOARDING ===== -->
+<!-- ===== AUTH (local, device-encrypted) ===== -->
+<div class="overlay-screen" id="authScreen">
+  <button class="lang-toggle" id="langToggleAuth" style="position:absolute; top:calc(16px + env(safe-area-inset-top,0px)); inset-inline-end:16px; z-index:2;">English</button>
+  <div class="auth-box">
+    <div class="auth-logo">🤝</div>
+    <h1 class="auth-title" id="authTitle"></h1>
+    <p class="auth-sub" id="authSub"></p>
+    <div class="field">
+      <input id="authIdentifier" type="text" inputmode="email" autocomplete="username">
+    </div>
+    <div class="field">
+      <input id="authPassword" type="password" autocomplete="current-password">
+      <div class="forgot-row"><a class="auth-link" id="forgotLink"></a></div>
+    </div>
+    <div class="field hidden" id="privacyField">
+      <label class="check-row" style="font-size:12.5px; border-bottom:none; padding:0; align-items:flex-start;">
+        <input type="checkbox" id="authPrivacyCheck" style="margin-top:2px;">
+        <span id="authPrivacyLabel"></span> <a class="auth-link" id="authPrivacyLink"></a>
+      </label>
+    </div>
+    <p class="auth-error" id="authError"></p>
+    <button class="btn" id="authSubmit"></button>
+    <p class="auth-toggle-mode"><a class="auth-link" id="modeToggleLink"></a></p>
+    <p class="auth-hint" id="authHint"></p>
+  </div>
+</div>
+
+<div class="overlay-screen hidden" id="onboardScreen">
+  <button class="lang-toggle" id="langToggleOnboard" style="position:absolute; top:calc(16px + env(safe-area-inset-top,0px)); inset-inline-end:16px; z-index:2;">English</button>
+  <div class="auth-box" id="onboardBox"></div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app-shell hidden" id="appShell">
+  <nav class="tabbar" id="tabbar">
+    <button class="tab-btn active" data-target="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3M3 9.5h18"/></svg>
+      <span data-t="nav_today"></span>
+    </button>
+    <button class="tab-btn" data-target="tasks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6h11M9 12h11M9 18h7"/><path d="M4 6l1.3 1.3L7.5 5"/><path d="M4 12l1.3 1.3L7.5 11"/></svg>
+      <span data-t="nav_tasks"></span>
+    </button>
+    <button class="tab-btn" data-target="review">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.4 6.4 0 0 0 9.5 9.5z"/></svg>
+      <span data-t="nav_review"></span>
+    </button>
+    <button class="tab-btn" data-target="goals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.7" fill="currentColor"/></svg>
+      <span data-t="nav_goals"></span>
+    </button>
+    <button class="tab-btn" data-target="agenda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><circle cx="8.2" cy="14" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="14" r="1.1" fill="currentColor" stroke="none"/><circle cx="8.2" cy="17.3" r="1.1" fill="currentColor" stroke="none"/></svg>
+      <span data-t="nav_agenda"></span>
+    </button>
+    <button class="tab-btn" data-target="coach">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v10H9l-4 4V5z"/><circle cx="9" cy="10" r="0.8" fill="currentColor"/><circle cx="12.5" cy="10" r="0.8" fill="currentColor"/><circle cx="16" cy="10" r="0.8" fill="currentColor"/></svg>
+      <span data-t="nav_coach"></span>
+    </button>
+  </nav>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="who">
+        <button class="avatar" id="avatarBtn">R</button>
+        <div><div class="name" id="topName">Rafiq</div><div class="sub" data-t="tagline"></div></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-toggle" id="themeToggle">🌙</button>
+        <button class="lang-toggle" id="langToggle">English</button>
+      </div>
+      <div class="settings-menu" id="settingsMenu">
+        <button class="settings-item" id="menuChangeName">✏️ <span data-t="settings_change_name"></span></button>
+        <button class="settings-item" id="menuPrivacy">🔒 <span data-t="settings_privacy"></span></button>
+        <button class="settings-item" id="menuPledge">🤝 <span data-t="settings_pledge"></span></button>
+        <button class="settings-item" id="menuFamily">👪 <span data-t="settings_family"></span></button>
+        <button class="settings-item" id="menuLogout">↩️ <span data-t="settings_logout"></span></button>
+        <button class="settings-item danger" id="menuDelete">🗑️ <span data-t="settings_delete"></span></button>
+      </div>
+    </header>
+
+    <div class="overlay-screen hidden" id="infoModal">
+      <div class="auth-box">
+        <div class="auth-logo" id="infoModalIcon">🔒</div>
+        <h1 class="auth-title" id="infoModalTitle"></h1>
+        <div class="info-modal-body" id="infoModalBody"></div>
+        <button class="btn" id="infoModalClose" data-t="modal_close"></button>
+      </div>
+    </div>
+
+    <div class="overlay-screen hidden" id="agendaFormModal">
+      <div class="auth-box" style="max-width:420px;">
+        <div class="auth-logo" id="agendaFormIcon">📅</div>
+        <h1 class="auth-title" id="agendaFormTitle"></h1>
+        <div class="field"><input class="mini-input" id="agTitle"></div>
+        <div class="field"><input class="mini-input" id="agDesc"></div>
+        <div class="field-row" style="display:flex; gap:8px;">
+          <div class="field" style="flex:1;"><label id="agDateLabel"></label><input class="mini-input" id="agDate" type="date"></div>
+          <div class="field" style="flex:1;"><label id="agTimeLabel"></label><input class="mini-input" id="agTime" type="time"></div>
+        </div>
+        <div class="field" id="agPriorityField">
+          <label data-t="task_priority_label"></label>
+          <div class="type-toggle" id="agPriorityToggle">
+            <button type="button" data-p="low" data-t="priority_low"></button>
+            <button type="button" class="active" data-p="medium" data-t="priority_medium"></button>
+            <button type="button" data-p="high" data-t="priority_high"></button>
+          </div>
+        </div>
+        <div class="field hidden" id="agSkillField">
+          <label data-t="task_skill_label"></label>
+          <select class="skill-select" id="agSkillSelect" style="margin-top:0;"></select>
+        </div>
+        <div class="field">
+          <label id="agRecurringLabel"></label>
+          <select class="mini-input" id="agRecurring">
+            <option value="none" data-t="recurring_none"></option>
+            <option value="daily" data-t="recurring_daily"></option>
+            <option value="weekly" data-t="recurring_weekly"></option>
+            <option value="monthly" data-t="recurring_monthly"></option>
+            <option value="yearly" data-t="recurring_yearly"></option>
+          </select>
+        </div>
+        <div class="field">
+          <label id="agReminderLabel"></label>
+          <select class="mini-input" id="agReminder">
+            <option value="none" data-t="reminder_none"></option>
+            <option value="0" data-t="reminder_0"></option>
+            <option value="5" data-t="reminder_5"></option>
+            <option value="15" data-t="reminder_15"></option>
+            <option value="30" data-t="reminder_30"></option>
+            <option value="60" data-t="reminder_60"></option>
+            <option value="1440" data-t="reminder_1440"></option>
+          </select>
+        </div>
+        <div class="field hidden" id="agAssignField">
+          <label data-t="agenda_family_label"></label>
+          <div class="chip-row" id="agAssignChips"></div>
+        </div>
+        <p class="auth-hint hidden" id="agFamilyHint" data-t="agenda_family_hint"></p>
+        <p class="auth-error" id="agError"></p>
+        <div class="onboard-nav">
+          <button class="btn ghost" id="agCancelBtn" data-t="agenda_cancel"></button>
+          <button class="btn" id="agSaveBtn" data-t="agenda_save"></button>
+        </div>
+        <button class="btn ghost hidden" id="agDeleteBtn" style="margin-top:8px; color:var(--urgent); border-color:var(--urgent);" data-t="agenda_delete"></button>
+      </div>
+    </div>
+
+    <div class="overlay-screen hidden" id="familyModal">
+      <div class="auth-box" style="max-width:420px;">
+        <div class="auth-logo">👪</div>
+        <h1 class="auth-title" data-t="family_title"></h1>
+        <p class="auth-sub" id="familyIntro"></p>
+
+        <div id="familyRoleChoice">
+          <button class="btn" id="pickRoleAdmin" data-t="family_role_admin_btn"></button>
+          <button class="btn ghost" id="pickRoleMember" style="margin-top:8px;" data-t="family_role_member_btn"></button>
+        </div>
+
+        <div id="familyAdminView" class="hidden">
+          <div class="add-row">
+            <input class="mini-input" id="newMemberName" data-t-ph="family_add_ph">
+            <button class="add-go" id="addMemberBtn">+</button>
+          </div>
+          <div id="familyMembersList" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;"></div>
+          <p class="auth-hint" data-t="family_admin_hint"></p>
+        </div>
+
+        <div id="familyMemberView" class="hidden">
+          <p class="auth-hint" data-t="family_member_hint"></p>
+        </div>
+
+        <button class="btn ghost" id="familyCloseBtn" style="margin-top:14px;" data-t="modal_close"></button>
+      </div>
+    </div>
+
+    <div class="overlay-screen hidden" id="calendarModal">
+      <div class="auth-box" style="max-width:420px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <button class="icon-toggle" id="calPrevBtn">‹</button>
+          <h1 class="auth-title" id="calMonthLabel" style="font-size:16px;"></h1>
+          <button class="icon-toggle" id="calNextBtn">›</button>
+        </div>
+        <div id="calGrid" class="cal-grid"></div>
+        <div id="calDayAgenda" class="info-modal-body" style="max-height:30vh;"></div>
+        <button class="btn ghost" id="calCloseBtn" data-t="calendar_close"></button>
+      </div>
+    </div>
+
+    <div class="overlay-screen hidden" id="notifAskModal">
+      <div class="auth-box">
+        <div class="auth-logo">🔔</div>
+        <h1 class="auth-title" data-t="notif_ask_title"></h1>
+        <p class="auth-sub" data-t="notif_ask_body" style="text-align:start;"></p>
+        <button class="btn" id="notifAllowBtn" data-t="notif_ask_allow"></button>
+        <button class="btn ghost" id="notifLaterBtn" data-t="notif_ask_later"></button>
+      </div>
+    </div>
+
+    <div class="content-scroll">
+      <!-- TODAY -->
+      <section class="screen active" data-screen="today" id="screen-today">
+        <div class="hero">
+          <span class="hero-glow" aria-hidden="true"></span>
+          <p class="page-sub" id="dateSub"></p>
+          <h1 class="page-title" id="greetingText"></h1>
+        </div>
+
+        <div class="ring-hero" id="ringHero">
+          <svg viewBox="0 0 160 160" class="ring-svg">
+            <circle class="ring-track" cx="80" cy="80" r="70"></circle>
+            <circle class="ring-fill" id="ringFill" cx="80" cy="80" r="70"></circle>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" id="ringPct">0%</div>
+            <div class="ring-label" id="ringLabel"></div>
+          </div>
+        </div>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="today-priorities-chips" id="lifePrioritiesChips"></div>
+
+        <div class="card">
+          <div class="section-label" data-t="today_schedule_title" style="margin-bottom:10px;"></div>
+          <div class="timeline" id="scheduleList"></div>
+          <div class="add-sched-row">
+            <input class="mini-input" id="newSchedLabel">
+            <input class="mini-input add-sched-time" id="newSchedTime" type="time">
+            <button class="add-go" id="addSchedBtn">+</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label" data-t="today_priorities_title" style="margin-bottom:10px;"></div>
+          <div class="priority-list" id="todayPriorities"></div>
+        </div>
+
+        <div class="card" id="todayAgendaCard">
+          <div class="section-label" data-t="today_agenda_card_title" style="margin-bottom:10px;"></div>
+          <div id="todayAgendaBody" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+
+        <div class="ai-status-note hidden" id="neglectNudge"></div>
+
+        <div class="note-card" id="noteCard"></div>
+      </section>
+
+      <!-- TASKS -->
+      <section class="screen" data-screen="tasks" id="screen-tasks">
+        <div>
+          <h1 class="page-title" data-t="tasks_title"></h1>
+          <p class="page-sub" data-t="tasks_subtitle"></p>
+        </div>
+        <textarea class="brain" id="brainDump"></textarea>
+        <button class="btn" id="sortBtn" data-t="tasks_sort_btn"></button>
+        <div id="tasksOutput" style="display:flex;flex-direction:column;gap:16px;"></div>
+      </section>
+
+      <!-- REVIEW -->
+      <section class="screen" data-screen="review" id="screen-review">
+        <div>
+          <h1 class="page-title" data-t="review_title"></h1>
+          <p class="page-sub" data-t="review_subtitle"></p>
+        </div>
+        <div class="mood-row" id="moodRow">
+          <button class="mood-btn" data-mood="down">😞</button>
+          <button class="mood-btn" data-mood="ok">😐</button>
+          <button class="mood-btn" data-mood="good">🙂</button>
+          <button class="mood-btn" data-mood="great">🔥</button>
+        </div>
+        <div class="card">
+          <div class="section-label" data-t="review_checklist_title" style="margin-bottom:6px;"></div>
+          <div class="check-list" id="reviewChecklist"></div>
+        </div>
+        <button class="btn" id="reflectBtn" data-t="review_reflect_btn"></button>
+        <div class="ai-card" id="reflectionBox" style="display:none;">
+          <span class="ai-tag">✨ <span data-t="review_ai_badge"></span></span>
+          <div class="ai-text" id="reflectionText"></div>
+        </div>
+        <div id="reflectQuestionWrap" style="display:none;">
+          <p class="section-label" data-t="review_question_title" style="margin-bottom:6px;"></p>
+          <input class="qinput" id="reflectAnswer">
+        </div>
+      </section>
+
+      <!-- GOALS -->
+      <section class="screen" data-screen="goals" id="screen-goals">
+        <div>
+          <h1 class="page-title" data-t="goals_title"></h1>
+          <p class="page-sub" data-t="goals_subtitle"></p>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="subsection-title"><span data-t="goals_section_goals"></span><span class="count" id="goalsCount">0</span></div>
+          <div class="add-row">
+            <input class="mini-input" id="newGoalInput" data-t-ph="goal_add_ph">
+            <button class="add-go" id="addGoalBtn">+</button>
+          </div>
+          <select class="skill-select" id="newGoalSkill"></select>
+          <div id="goalsListWrap" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="subsection-title"><span data-t="goals_section_skills"></span><span class="count" id="skillsCount">0</span></div>
+          <div class="add-row">
+            <input class="mini-input" id="newSkillInput" data-t-ph="skill_add_name_ph">
+            <button class="add-go" id="addSkillBtn">+</button>
+          </div>
+          <div id="skillsListWrap" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+
+        <div class="card" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="subsection-title"><span data-t="goals_section_habits"></span><span class="count" id="habitsCount">0</span></div>
+          <div class="add-row">
+            <input class="mini-input" id="newHabitInput" data-t-ph="habit_add_ph">
+            <button class="add-go" id="addHabitBtn">+</button>
+          </div>
+          <select class="skill-select" id="newHabitSkill"></select>
+          <div id="habitsListWrap" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+      </section>
+
+      <!-- AGENDA (appointments & scheduled tasks) -->
+      <section class="screen" data-screen="agenda" id="screen-agenda">
+        <div>
+          <h1 class="page-title" data-t="agenda_title"></h1>
+          <p class="page-sub" data-t="agenda_subtitle"></p>
+        </div>
+
+        <div class="type-toggle" id="agendaSubTabs">
+          <button type="button" class="active" data-sub="appts" data-t="agenda_tab_appts"></button>
+          <button type="button" data-sub="tasks" data-t="agenda_tab_tasks"></button>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <button class="btn" id="openAddAppt" data-t="agenda_add_appt" style="display:block;"></button>
+          <button class="btn ghost ag-tasks-only hidden" id="openAddTask" data-t="agenda_add_task" style="display:none;"></button>
+        </div>
+        <button class="btn ghost" id="openCalendarBtn" data-t="agenda_calendar_btn"></button>
+
+        <div id="agendaApptsView">
+          <div class="section-label" data-t="agenda_upcoming" style="margin:6px 0 8px;"></div>
+          <div id="apptsUpcomingList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <div class="section-label" data-t="agenda_past" style="margin:16px 0 8px;"></div>
+          <div id="apptsPastList" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+
+        <div id="agendaTasksView" class="hidden">
+          <div class="section-label" data-t="task_incomplete_section" style="margin:6px 0 8px;"></div>
+          <div id="tasksIncompleteList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <div class="section-label" data-t="task_done_section" style="margin:16px 0 8px;"></div>
+          <div id="tasksDoneList" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+      </section>
+
+      <!-- COACH -->
+      <section class="screen" data-screen="coach" id="screen-coach">
+        <div>
+          <h1 class="page-title" data-t="coach_title"></h1>
+          <p class="page-sub" data-t="coach_subtitle"></p>
+        </div>
+        <div class="ai-status-note hidden" id="aiStatusNote"></div>
+        <div class="chat" id="chatWindow"></div>
+        <div class="chat-input-row">
+          <input id="chatInput">
+          <button id="chatSend">↩</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= translations ================= */
+  var T = {
+    ar: {
+      appName:"رفيق", tagline:"رفيقك يعلّمك تدير يومك",
+      nav_today:"اليوم", nav_tasks:"المهام", nav_review:"مراجعة", nav_goals:"أهداف", nav_agenda:"المواعيد", nav_coach:"رفيق",
+      agenda_title:"المواعيد والمهام", agenda_subtitle:"نظّم مواعيدك ومهامك المجدولة بتواريخ وتذكيرات.",
+      agenda_tab_appts:"مواعيد", agenda_tab_tasks:"مهام مجدولة",
+      agenda_add_appt:"+ موعد جديد", agenda_add_task:"+ مهمة جديدة",
+      agenda_calendar_btn:"📅 عرض التقويم",
+      appt_title_ph:"اسم الموعد", appt_desc_ph:"وصف اختياري",
+      appt_date_label:"التاريخ", appt_time_label:"الوقت",
+      appt_recurring_label:"يتكرر", recurring_none:"مرة وحدة", recurring_daily:"يوميًا", recurring_weekly:"أسبوعيًا", recurring_monthly:"شهريًا", recurring_yearly:"سنويًا",
+      reminder_label:"التذكير", reminder_none:"بدون تذكير", reminder_0:"وقت الموعد", reminder_5:"قبل ٥ دقائق", reminder_15:"قبل ١٥ دقيقة", reminder_30:"قبل ٣٠ دقيقة", reminder_60:"قبل ساعة", reminder_1440:"قبل يوم",
+      agenda_family_label:"تعيين لفرد من العائلة", agenda_family_disabled:"غير متاح حاليًا — يحتاج نظام حسابات عائلة (قريبًا)",
+      agenda_save:"حفظ", agenda_cancel:"إلغاء", agenda_delete:"حذف",
+      agenda_upcoming:"القادمة", agenda_past:"السابقة",
+      appt_empty:"ما فيه مواعيد قادمة — ضيف وحد بالزر فوق.",
+      task_title_ph:"اسم المهمة", task_desc_ph:"وصف اختياري", task_due_label:"تاريخ الاستحقاق",
+      task_priority_label:"الأولوية", priority_low:"منخفضة", priority_medium:"متوسطة", priority_high:"عالية",
+      task_empty:"ما فيه مهام مجدولة — ضيف وحدة بالزر فوق.",
+      task_done_section:"مكتملة", task_incomplete_section:"غير مكتملة",
+      today_agenda_card_title:"مواعيدك ومهامك",
+      today_next_appt:"أقرب موعد", today_due_today:"مهام مستحقة اليوم", today_incomplete_tasks:"مهام غير مكتملة", today_upcoming_reminders:"تذكيرات قادمة",
+      today_agenda_empty:"ما عندك مواعيد أو مهام مجدولة اليوم",
+      calendar_title:"التقويم", calendar_close:"رجوع",
+      notif_ask_title:"فعّل الإشعارات", notif_ask_body:"عشان تذكيرات المواعيد والمهام توصلك وانت بالمتصفح (حتى لو التطبيق بالخلفية)، لازم توافق على إشعارات المتصفح. ما تشتغل لو قفلت التطبيق كامل أو قفلت الجوال — هذا قيد تقني حاليًا.",
+      notif_ask_allow:"فعّل الإشعارات", notif_ask_later:"بعدين",
+      notif_denied_note:"الإشعارات مرفوضة من إعدادات المتصفح — التذكيرات بتظهر جوا التطبيق بس.",
+      greeting_morning:"صباح الخير", greeting_evening:"مساء الخير",
+      today_schedule_title:"جدول اليوم", today_priorities_title:"أهم أشياء اليوم",
+      today_note:"مو لازم تسوي كل شيء اليوم. ركّز على المهم.",
+      today_no_tasks:'ما فيه مهام مضافة بعد — افتح "المهام" وفرّغ اللي في راسك.',
+      today_no_schedule:"ما ضفت أي موعد بعد", sched_label_ph:"الشي (مثلاً: نادي، عمل...)",
+      stat_priorities:"أولوياتك", stat_goals:"أهداف تشتغل عليها", stat_habits:"عادات اليوم", stat_next:"جلستك الجاية", stat_none:"ولا وحدة بعد",
+      tasks_title:"المهام", tasks_subtitle:"فرّغ كل اللي في راسك، وخلّني أرتبها لك.",
+      tasks_placeholder:"عندي واجب\nعندي اختبار\nأبغى أتمرن\nلازم أذاكر الفصل الثالث",
+      tasks_sort_btn:"رتّب لي 🔴🟡🟢", tasks_sorting:"يرتب...",
+      tier_urgent:"ضروري اليوم", tier_important:"مهم", tier_extra:"إضافي",
+      review_title:"مراجعة اليوم", review_subtitle:"كيف كان يومك؟",
+      review_checklist_title:"وش أنجزت من عاداتك اليوم؟", review_checklist_empty:"ما ضفت عادات بعد — ضيفها من تبويب الأهداف عشان تتابعها هنا.",
+      review_reflect_btn:"حلّل يومي", review_reflect_loading:"يحلل...",
+      review_ai_badge:"تحليل ذكي", review_question_title:"وش الشي الواحد اللي تقدر تغيره بكرة؟", review_answer_placeholder:"اكتب هنا...",
+      goals_title:"أنا وأهدافي", goals_subtitle:"كل شي هنا من عندك، وتقدر تعدله أو تحذفه أي وقت.",
+      goals_section_goals:"أهدافك", goals_section_skills:"مهاراتك", goals_section_habits:"عاداتك",
+      goal_add_ph:"هدف جديد... (مثلاً: أتعلم الإنجليزية)", skill_add_name_ph:"مهارة جديدة...", habit_add_ph:"عادة جديدة... (مثلاً: قراءة 20 دقيقة)",
+      no_goals_yet:"ولا هدف مضاف بعد", no_skills_yet:"ولا مهارة مضافة بعد", no_habits_yet:"ولا عادة مضافة بعد",
+      log_session:"+ سجل جلسة", sessions_suffix:"جلسة",
+      skill_level_from_to:"من {c} إلى {t} · {h} ساعة/أسبوع",
+      habit_build:"أبنيها", habit_quit:"أوقفها",
+      coach_title:"رفيق", coach_subtitle:"اسألني أي شي", coach_placeholder:"اكتب رسالتك...",
+      ai_offline_note:"⚠️ ميزة الذكاء الاصطناعي حاليًا تشتغل بس وقت ما تفتح رفيق من داخل تطبيق أو موقع Claude وانت داخل بحسابك. إذا فتحته كرابط مباشر برّه (Safari أو من الشاشة الرئيسية) الذكاء الاصطناعي ما يرد حاليًا — هذا قيد من منصة Claude نفسها مو من التطبيق.",
+      lang_switch_to:"English",
+
+      auth_email_title:"هلا فيك! ابدأ مع رفيق", auth_email_sub:"دخول حقيقي برمز تحقق يوصلك على بريدك — ما يحتاج كلمة سر.",
+      auth_email_label:"البريد الإلكتروني", auth_send_code_btn:"أرسل رمز التحقق",
+      auth_otp_title:"شيك على بريدك 📩", auth_otp_sub:"أرسلنا رمز مكون من ٦ أرقام إلى",
+      auth_otp_label:"رمز التحقق", auth_verify_btn:"تحقق وادخل",
+      auth_resend:"إعادة إرسال الرمز", auth_change_email:"تغيير البريد الإلكتروني",
+      auth_fill_all:"عبّي الحقل أول", auth_email_invalid:"اكتب بريد إلكتروني صحيح",
+      auth_otp_invalid:"الرمز لازم يكون ٦ أرقام",
+      auth_otp_wrong:"الرمز غلط أو منتهي، جرب ترسل رمز جديد",
+      auth_send_failed:"ما قدرت أرسل الرمز، تأكد من اتصالك وجرب مرة ثانية",
+      auth_resent:"تم إرسال رمز جديد ✅",
+      auth_not_configured:"نظام التحقق ما اتوصل بالسيرفر — تأكد إن الإعداد صحيح.",
+      auth_hint_email:"التحقق حقيقي عبر Supabase: الرمز يوصل فعليًا على بريدك، وحسابك مرتبط بإيميلك مو بالجهاز.",
+      auth_hint_otp:"",
+
+      ob_about_title:"عنك", ob_name_label:"اسمك", ob_name_ph:"اكتب اسمك",
+      ob_nickname_label:"كيف تحب التطبيق يناديك؟ (اختياري)", ob_nickname_ph:"بيستخدم اسمك لو تركتها فاضية",
+      ob_focus_title:"وش الأشياء المهمة بالنسبة لك حاليًا؟",
+      focus_work:"العمل", focus_study:"الدراسة", focus_health:"الصحة", focus_money:"المال", focus_relationships:"العلاقات", focus_learning:"التعلم", focus_hobbies:"الهوايات",
+      ob_focus_other_ph:"أضف شي ثاني...",
+      ob_goals_title:"وش الأشياء اللي تبغى تحققها؟", ob_goals_ph:"مثلاً: أتعلم الإنجليزية",
+      ob_add:"إضافة", ob_skip_hint:"تقدر تتخطاها وتضيفها بعدين من داخل التطبيق.",
+      ob_skills_title:"وش المهارات اللي تبغى تطورها؟", ob_skill_name_ph:"اسم المهارة",
+      ob_skill_current:"مستواك الحالي", ob_skill_target:"المستوى المستهدف", ob_skill_hours:"كم ساعة أسبوعيًا؟",
+      ob_habits_title:"وش العادات اللي تبغى تبنيها أو توقفها؟", ob_habit_ph:"مثلاً: قراءة 20 دقيقة",
+      ob_schedule_title:"كيف يمشي يومك؟", ob_wake_label:"وقت الاستيقاظ", ob_sleep_label:"وقت النوم",
+      ob_block_label_ph:"الشي (مثلاً: عمل، نادي...)", ob_block_time_ph:"الوقت",
+      ob_priorities_title:"وش أهم ٣ أشياء بالنسبة لك حاليًا؟", ob_priority_ph:"أولوية...",
+      onboard_next:"التالي", onboard_back:"رجوع", onboard_finish:"يلا نبدأ 🚀",
+      onboard_summary_title:"جاهز يا {name}! 🎉", onboard_summary_sub:"التطبيق الحين مبني بالكامل على بياناتك، وتقدر تعدل أو تحذف أي شي متى ما تبي.",
+      onboard_need_name:"اكتب اسمك عشان نكمل", onboard_need_priority_max:"لين ٣ بس",
+
+      settings_change_name:"تغيير الاسم", settings_delete:"حذف الحساب وبياناته", settings_logout:"تسجيل الخروج",
+      settings_delete_confirm:"بيتحذف حسابك وكل بياناتك المحفوظة على هذا الجهاز (الأهداف، العادات، الجدول...) نهائيًا. متأكد؟",
+      settings_family:"العائلة",
+      family_title:"عائلتك 👪",
+      family_intro_none:"حدد دورك بالعائلة عشان تبدأ.",
+      family_intro_admin:"انت مدير العائلة — تقدر تضيف أفراد وتسند لهم مواعيد ومهام.",
+      family_intro_member:"انت فرد بالعائلة — تشوف المواعيد والمهام اللي يسندها لك المدير.",
+      family_role_admin_btn:"أنا مدير العائلة", family_role_member_btn:"أنا فرد بالعائلة",
+      family_add_ph:"اسم فرد العائلة...",
+      family_admin_hint:"⚠️ هذي معاينة محلية بالجهاز — الأسماء هنا وهمية للتجربة، ولين نربط التطبيق بحساب حقيقي (Firebase) ما يقدر أفراد عائلتك يدخلون فعليًا من أجهزتهم.",
+      family_member_hint:"⚠️ هذا دور تجريبي محلي — بعد ما نربط التطبيق بحساب حقيقي، بتقدر تنضم لعائلة فعلية ويسندك المدير مواعيد ومهام حقيقية.",
+      agenda_family_hint:"⚠️ التعيين هذا معاينة محلية فقط، ما يوصل لجهاز الفرد الثاني حاليًا.",
+      family_no_members:"ما ضفت أفراد بعد",
+      family_assignee_me:"لي",
+      family_switch_role:"بدّل دورك",
+      skill_link_none:"— بدون ربط بمهارة —",
+      task_skill_label:"يخدم مهارة",
+      linked_skill_prefix:"🔗",
+      neglect_badge:"⚠️ ما تحرك",
+      skill_served_by:"تخدمها {n} عادة/مهمة",
+      contrib_toast:"🌱 ساهمت في: {name}",
+      neglect_nudge:"⚠️ مهارة «{name}» ما تحركت آخر ٣ أيام رغم إنها مرتبطة بعادات عندك. تبي تعدّل خطتها مع رفيق؟",
+      neglect_nudge_btn:"عدّل الخطة مع رفيق",
+      prompt_new_name:"وش تحب رفيق ينادينك؟",
+      settings_privacy:"الخصوصية والأمان", settings_pledge:"عهدي",
+      modal_close:"تمام",
+      privacy_title:"وعد رفيق لك 🔒",
+      privacy_body_p1:"<strong>بياناتك مشفّرة فعليًا على جهازك.</strong> قبل ما تُحفظ، أشفّرها بمفتاح خاص بجهازك (AES-256) — فاتح الملفات على جهازك يشوف رموز غير مفهومة، مو بياناتك الحقيقية.",
+      privacy_body_p2:"ما أرسل بياناتك (أهدافك، عاداتك، جدولك) لأي سيرفر خارجي — تضل محفوظة عندك بس. لو حذفت التطبيق أو مسحت بياناته، تروح بدون رجعة.",
+      privacy_body_p3:"لما تكلمني بتبويب «رفيق»، رسالتك تنرسل للنموذج عشان يرد عليك بس، وما تُحفظ كملف شخصي دائم مرتبط فيك.",
+      privacy_body_p4:"بصراحة تامة: هذا تطبيق بدون سيرفر خاص، فالحماية هنا حماية جهازك المحلي مو نظام حسابات بمصادقة مزدوجة — لو حد ثاني يفتح نفس المتصفح على جهازك، يقدر يشوف بياناتك.",
+      pledge_title:"عهدك مع نفسك 🤝",
+      pledge_body_p1:"أنا، <strong>{name}</strong>، أتعهد مع نفسي — مو مع أحد ثاني — إني:",
+      pledge_item1:"أصر على تحقيق أهدافي، حتى لو تأخرت خطوة أهم من إني أوقف.",
+      pledge_item2:"أجاهد نفسي أتخلص من عاداتي السلبية، خطوة بخطوة بدون ما أجلد نفسي لو تعثرت.",
+      pledge_item3:"أركّز على تطوير مهاراتي، وأدي وقت حقيقي لتطويرها مو بس نية.",
+      pledge_item4:"أرفع من عاداتي الحسنة وأخليها جزء من يومي، مو مجرد هدف بعيد.",
+      pledge_not_signed:"لسا ما وقّعت عهدك — تقدر تسويه من هنا.",
+      pledge_sign_btn:"أوقّع عهدي الحين",
+      pledge_signed_on:"وقّعته بتاريخ",
+      ob_pledge_title:"قبل لا نبدأ، عهد بسيط",
+      ob_pledge_check:"أوافق وأتعهد مع نفسي على هذا الكلام",
+      ob_pledge_need:"لازم توافق على العهد عشان نكمل",
+      auth2_signup_title:"هلا فيك! ابدأ مع رفيق", auth2_signup_sub:"سوّي حساب — بياناتك مشفّرة ومحفوظة على جهازك بس.",
+      auth2_login_title:"هلا فيك رجعت 👋", auth2_login_sub:"سجل دخولك عشان تكمل من وين وقفت.",
+      auth2_identifier_ph:"البريد الإلكتروني أو رقم الجوال", auth2_password_ph:"كلمة السر",
+      auth2_forgot:"نسيت كلمة السر؟",
+      auth2_signup_btn:"إنشاء الحساب", auth2_login_btn:"دخول",
+      auth2_switch_to_login:"عندك حساب؟ سجّل دخول", auth2_switch_to_signup:"ماعندك حساب؟ أنشئ وحد جديد",
+      auth2_privacy_pre:"أوافق على", auth2_privacy_link:"وعد الخصوصية",
+      auth2_privacy_need:"لازم توافق على وعد الخصوصية عشان تكمل",
+      auth2_fill_all:"عبّي كل الحقول أول", auth2_identifier_short:"اكتب بريد إلكتروني أو رقم جوال صحيح",
+      auth2_password_short:"كلمة السر لازم ٤ خانات على الأقل",
+      auth2_wrong:"البريد/الجوال أو كلمة السر غلط", auth2_locked:"حاولت كثير، انتظر شوي وجرب مرة ثانية",
+      auth2_no_account:"ما فيه حساب بهذا البريد/الجوال على هذا الجهاز — سوّي وحد جديد.",
+      auth2_exists:"فيه حساب بهذا البريد/الجوال مسبقًا على هذا الجهاز — سجل دخول بدل ما تسوي وحد جديد.",
+      auth2_reset_confirm:"ما نقدر نرجع كلمة سرك (محلية ومشفرة). بنمسح هذا الحساب وبياناته على الجهاز وتبدأ من جديد. أكيد؟",
+      auth2_hint:"تسجيل الدخول والبيانات محلية بالكامل على جهازك، ومشفرة (AES-256) — ما ترفع لأي سيرفر.",
+      tour_title:"جولة سريعة على رفيق 🧭",
+      tour_today:"لمحة يومك — جدولك، أهم أولوياتك، ومدى تقدمك اليوم بنظرة وحدة.",
+      tour_tasks:"فرّغ كل اللي في راسك وخلّه يرتبها لك حسب الأهمية.",
+      tour_review:"في آخر يومك، حدد مزاجك وعاداتك، وخله يحلل يومك معك.",
+      tour_goals:"أهدافك ومهاراتك وعاداتك كلها هنا — ضيف واحذف وتابع تقدمك.",
+      tour_coach:"اسأله أي شي، وخله يساعدك تنظم وقتك وتحقق أهدافك.",
+      settings_faceid_enable:"فعّل قفل بصمة الوجه", settings_faceid_disable:"عطّل قفل بصمة الوجه",
+      faceid_title:"افتح ببصمتك", faceid_sub:"فعّلت قفل حماية إضافي على هذا الجهاز — افتحه ببصمة الوجه أو التاتش.",
+      faceid_unlock_btn:"افتح ببصمة الوجه 🔓", faceid_disable_link:"عندك مشكلة؟ عطّل القفل",
+      faceid_disable_confirm:"بيتعطل قفل البصمة على هذا الجهاز بس. حسابك وبياناتك يضلون زي ما هم. متابعة؟",
+      faceid_failed:"ما قدرنا نتحقق من بصمتك، جرب مرة ثانية",
+      faceid_unsupported:"جهازك أو المتصفح ما يدعم قفل البصمة حاليًا",
+      faceid_setup_failed:"ما قدرنا نفعّل البصمة، جرب مرة ثانية",
+      faceid_enabled_ok:"تم تفعيل قفل البصمة ✅"
+    },
+    en: {
+      appName:"Rafiq", tagline:"Learn to run your own day",
+      nav_today:"Today", nav_tasks:"Tasks", nav_review:"Review", nav_goals:"Goals", nav_agenda:"Agenda", nav_coach:"Coach",
+      agenda_title:"Appointments & Tasks", agenda_subtitle:"Organize your dated appointments and scheduled tasks with reminders.",
+      agenda_tab_appts:"Appointments", agenda_tab_tasks:"Scheduled tasks",
+      agenda_add_appt:"+ New appointment", agenda_add_task:"+ New task",
+      agenda_calendar_btn:"📅 View calendar",
+      appt_title_ph:"Appointment name", appt_desc_ph:"Optional description",
+      appt_date_label:"Date", appt_time_label:"Time",
+      appt_recurring_label:"Repeats", recurring_none:"Once", recurring_daily:"Daily", recurring_weekly:"Weekly", recurring_monthly:"Monthly", recurring_yearly:"Yearly",
+      reminder_label:"Reminder", reminder_none:"No reminder", reminder_0:"At the time", reminder_5:"5 min before", reminder_15:"15 min before", reminder_30:"30 min before", reminder_60:"1 hour before", reminder_1440:"1 day before",
+      agenda_family_label:"Assign to a family member", agenda_family_disabled:"Not available yet — needs a family accounts system (coming soon)",
+      agenda_save:"Save", agenda_cancel:"Cancel", agenda_delete:"Delete",
+      agenda_upcoming:"Upcoming", agenda_past:"Past",
+      appt_empty:"No upcoming appointments — add one with the button above.",
+      task_title_ph:"Task name", task_desc_ph:"Optional description", task_due_label:"Due date",
+      task_priority_label:"Priority", priority_low:"Low", priority_medium:"Medium", priority_high:"High",
+      task_empty:"No scheduled tasks — add one with the button above.",
+      task_done_section:"Completed", task_incomplete_section:"Incomplete",
+      today_agenda_card_title:"Your appointments & tasks",
+      today_next_appt:"Next appointment", today_due_today:"Due today", today_incomplete_tasks:"Incomplete tasks", today_upcoming_reminders:"Upcoming reminders",
+      today_agenda_empty:"No appointments or scheduled tasks today",
+      calendar_title:"Calendar", calendar_close:"Back",
+      notif_ask_title:"Turn on notifications", notif_ask_body:"For appointment and task reminders to reach you while browsing (even if the tab is backgrounded), you need to allow browser notifications. They won't work if the app or phone is fully closed — that's a current technical limit.",
+      notif_ask_allow:"Enable notifications", notif_ask_later:"Later",
+      notif_denied_note:"Notifications are blocked in browser settings — reminders will only show inside the app.",
+      greeting_morning:"Good morning", greeting_evening:"Good evening",
+      today_schedule_title:"Today's schedule", today_priorities_title:"Top priorities",
+      today_note:"You don't have to do everything today. Just focus on what matters.",
+      today_no_tasks:'No tasks yet — open "Tasks" and brain-dump what\'s on your mind.',
+      today_no_schedule:"No time blocks added yet", sched_label_ph:"Thing (e.g. gym, work...)",
+      stat_priorities:"Priorities", stat_goals:"Goals you're on", stat_habits:"Habits today", stat_next:"Next up", stat_none:"None yet",
+      tasks_title:"Tasks", tasks_subtitle:"Brain-dump everything on your mind, and I'll sort it for you.",
+      tasks_placeholder:"I have an assignment\nI have an exam\nI want to work out\nNeed to study chapter 3",
+      tasks_sort_btn:"Sort for me 🔴🟡🟢", tasks_sorting:"Sorting...",
+      tier_urgent:"Urgent today", tier_important:"Important", tier_extra:"Extra",
+      review_title:"Daily review", review_subtitle:"How was your day?",
+      review_checklist_title:"Which habits did you keep today?", review_checklist_empty:"No habits added yet — add some from the Goals tab to track them here.",
+      review_reflect_btn:"Analyze my day", review_reflect_loading:"Analyzing...",
+      review_ai_badge:"AI insight", review_question_title:"What's one thing you could change tomorrow?", review_answer_placeholder:"Type here...",
+      goals_title:"Me & my goals", goals_subtitle:"Everything here is yours — edit or delete any of it anytime.",
+      goals_section_goals:"Your goals", goals_section_skills:"Your skills", goals_section_habits:"Your habits",
+      goal_add_ph:"New goal... (e.g. learn English)", skill_add_name_ph:"New skill...", habit_add_ph:"New habit... (e.g. read 20 min)",
+      no_goals_yet:"No goals added yet", no_skills_yet:"No skills added yet", no_habits_yet:"No habits added yet",
+      log_session:"+ Log session", sessions_suffix:"sessions",
+      skill_level_from_to:"{c} → {t} · {h}h/week",
+      habit_build:"Build it", habit_quit:"Quit it",
+      coach_title:"Rafiq", coach_subtitle:"Ask me anything", coach_placeholder:"Type your message...",
+      ai_offline_note:"⚠️ The AI feature currently only works when you open Rafiq from inside the Claude app or claude.ai while signed in. If you opened it as a direct link (Safari, or from your Home Screen), the AI won't respond right now — this is a current limitation of the Claude platform itself, not the app.",
+      lang_switch_to:"العربية",
+
+      auth_email_title:"Welcome! Set up Rafiq", auth_email_sub:"Real sign-in with a verification code sent to your email — no password needed.",
+      auth_email_label:"Email address", auth_send_code_btn:"Send verification code",
+      auth_otp_title:"Check your email 📩", auth_otp_sub:"We sent a 6-digit code to",
+      auth_otp_label:"Verification code", auth_verify_btn:"Verify & continue",
+      auth_resend:"Resend code", auth_change_email:"Change email",
+      auth_fill_all:"Fill in the field first", auth_email_invalid:"Enter a valid email address",
+      auth_otp_invalid:"The code must be 6 digits",
+      auth_otp_wrong:"Wrong or expired code — try sending a new one",
+      auth_send_failed:"Couldn't send the code — check your connection and try again",
+      auth_resent:"A new code was sent ✅",
+      auth_not_configured:"The verification system couldn't reach the server — check the setup.",
+      auth_hint_email:"Real verification via Supabase: the code actually reaches your inbox, and your account is tied to your email, not the device.",
+      auth_hint_otp:"",
+
+      ob_about_title:"About you", ob_name_label:"Your name", ob_name_ph:"Type your name",
+      ob_nickname_label:"What should Rafiq call you? (optional)", ob_nickname_ph:"Uses your name if left blank",
+      ob_focus_title:"What matters most to you right now?",
+      focus_work:"Work", focus_study:"Study", focus_health:"Health", focus_money:"Money", focus_relationships:"Relationships", focus_learning:"Learning", focus_hobbies:"Hobbies",
+      ob_focus_other_ph:"Add something else...",
+      ob_goals_title:"What do you want to achieve?", ob_goals_ph:"e.g. learn English",
+      ob_add:"Add", ob_skip_hint:"You can skip this and add it later from inside the app.",
+      ob_skills_title:"What skills do you want to develop?", ob_skill_name_ph:"Skill name",
+      ob_skill_current:"Current level", ob_skill_target:"Target level", ob_skill_hours:"Hours per week?",
+      ob_habits_title:"What habits do you want to build or quit?", ob_habit_ph:"e.g. read 20 minutes",
+      ob_schedule_title:"How does your day run?", ob_wake_label:"Wake time", ob_sleep_label:"Sleep time",
+      ob_block_label_ph:"Thing (e.g. work, gym...)", ob_block_time_ph:"Time",
+      ob_priorities_title:"What are your top 3 priorities right now?", ob_priority_ph:"Priority...",
+      onboard_next:"Next", onboard_back:"Back", onboard_finish:"Let's start 🚀",
+      onboard_summary_title:"Ready, {name}! 🎉", onboard_summary_sub:"The app is now built entirely around your data — edit or delete anything, anytime.",
+      onboard_need_name:"Type your name to continue", onboard_need_priority_max:"Up to 3 only",
+
+      settings_change_name:"Change name", settings_delete:"Delete account & data",
+      settings_delete_confirm:"This permanently deletes your account and all data saved on this device (goals, habits, schedule...). Are you sure?", settings_logout:"Log out",
+      settings_family:"Family",
+      family_title:"Your family 👪",
+      family_intro_none:"Pick your role in the family to get started.",
+      family_intro_admin:"You're the family admin — add members and assign them appointments and tasks.",
+      family_intro_member:"You're a family member — you'll see appointments and tasks the admin assigns you.",
+      family_role_admin_btn:"I'm the family admin", family_role_member_btn:"I'm a family member",
+      family_add_ph:"Family member's name...",
+      family_admin_hint:"⚠️ This is a local, on-device preview — the names here are placeholders for testing. Until the app is connected to a real account (Firebase), your family members can't actually join from their own devices.",
+      family_member_hint:"⚠️ This is a local preview role. Once the app is connected to a real account, you'll be able to join an actual family and get real appointments and tasks assigned to you.",
+      agenda_family_hint:"⚠️ This assignment is a local preview only — it doesn't reach the other member's device yet.",
+      family_no_members:"No members added yet",
+      family_assignee_me:"Me",
+      family_switch_role:"Switch role",
+      skill_link_none:"— No skill link —",
+      task_skill_label:"Serves skill",
+      linked_skill_prefix:"🔗",
+      neglect_badge:"⚠️ Stalled",
+      skill_served_by:"Served by {n} habit(s)/task(s)",
+      contrib_toast:"🌱 Contributed to: {name}",
+      neglect_nudge:"⚠️ Your '{name}' skill hasn't moved in 3 days, even though habits are linked to it. Want to adjust the plan with Rafiq?",
+      neglect_nudge_btn:"Adjust plan with Rafiq",
+      prompt_new_name:"What should Rafiq call you?",
+      settings_privacy:"Privacy & security", settings_pledge:"My pledge",
+      modal_close:"Got it",
+      privacy_title:"Rafiq's promise to you 🔒",
+      privacy_body_p1:"<strong>Your data is genuinely encrypted on your device.</strong> Before anything is saved, it's encrypted with a key unique to your device (AES-256) — anyone poking through your device's files sees scrambled text, not your real data.",
+      privacy_body_p2:"Your goals, habits, and schedule are never sent to an outside server — they stay on your device only. If you delete the app or clear its data, it's gone for good.",
+      privacy_body_p3:"When you chat in the 'Rafiq' tab, your message is sent to the AI model only to generate a reply — it isn't saved as a permanent profile tied to you.",
+      privacy_body_p4:"Full honesty: this app has no private server, so the protection here is local-device protection, not a full multi-factor account system — anyone who opens the same browser on your device could see your data.",
+      pledge_title:"Your pledge to yourself 🤝",
+      pledge_body_p1:"I, <strong>{name}</strong>, pledge to myself — to no one else — that I will:",
+      pledge_item1:"Insist on reaching my goals, even if a step is delayed — that's better than quitting.",
+      pledge_item2:"Push myself to drop my negative habits, step by step, without beating myself up over setbacks.",
+      pledge_item3:"Focus on developing my skills, giving them real time — not just good intentions.",
+      pledge_item4:"Build up my good habits and make them part of my day, not just a distant goal.",
+      pledge_not_signed:"You haven't signed your pledge yet — you can do it from here.",
+      pledge_sign_btn:"Sign my pledge now",
+      pledge_signed_on:"Signed on",
+      ob_pledge_title:"Before we start, a simple pledge",
+      ob_pledge_check:"I agree and pledge this to myself",
+      ob_pledge_need:"You need to agree to the pledge to continue",
+      auth2_signup_title:"Welcome! Set up Rafiq", auth2_signup_sub:"Create an account — your data is encrypted and stays on this device only.",
+      auth2_login_title:"Welcome back 👋", auth2_login_sub:"Log in to pick up where you left off.",
+      auth2_identifier_ph:"Email or phone number", auth2_password_ph:"Password",
+      auth2_forgot:"Forgot password?",
+      auth2_signup_btn:"Create account", auth2_login_btn:"Log in",
+      auth2_switch_to_login:"Already have an account? Log in", auth2_switch_to_signup:"No account? Create a new one",
+      auth2_privacy_pre:"I agree to the", auth2_privacy_link:"privacy promise",
+      auth2_privacy_need:"You need to agree to the privacy promise to continue",
+      auth2_fill_all:"Please fill in all fields", auth2_identifier_short:"Enter a valid email or phone number",
+      auth2_password_short:"Password needs at least 4 characters",
+      auth2_wrong:"Wrong email/phone or password", auth2_locked:"Too many attempts — wait a bit and try again",
+      auth2_no_account:"No account with this email/phone on this device — create one first.",
+      auth2_exists:"An account with this email/phone already exists on this device — log in instead.",
+      auth2_reset_confirm:"We can't recover your password (it's local and encrypted). This will delete this account and its data on this device, and start fresh. Continue?",
+      auth2_hint:"Login and data are fully local to your device and encrypted (AES-256) — nothing is uploaded.",
+      tour_title:"A quick tour of Rafiq 🧭",
+      tour_today:"Your day at a glance — schedule, top priorities, and today's progress in one view.",
+      tour_tasks:"Brain-dump everything on your mind and let it sort by importance.",
+      tour_review:"At the end of your day, log your mood and habits, and get an honest reflection.",
+      tour_goals:"Your goals, skills, and habits all live here — add, remove, and track progress.",
+      tour_coach:"Ask it anything, and let it help you organize your time and reach your goals.",
+      settings_faceid_enable:"Enable Face ID lock", settings_faceid_disable:"Disable Face ID lock",
+      faceid_title:"Unlock with your face", faceid_sub:"You turned on an extra lock for this device — unlock with Face ID or Touch ID.",
+      faceid_unlock_btn:"Unlock with Face ID 🔓", faceid_disable_link:"Having trouble? Turn off the lock",
+      faceid_disable_confirm:"This turns off the biometric lock on this device only. Your account and data stay as they are. Continue?",
+      faceid_failed:"Couldn't verify — try again",
+      faceid_unsupported:"Your device or browser doesn't support biometric lock right now",
+      faceid_setup_failed:"Couldn't set up the biometric lock — try again",
+      faceid_enabled_ok:"Biometric lock enabled ✅"
+    }
+  };
+  var lang = "ar";
+  function t(k){ return (T[lang] && T[lang][k]) || k; }
+
+  /* ================= state ================= */
+  var STORE_KEY = null;
+  function setAccountStoreKey(identifier){ STORE_KEY = "rafiq_state_v3_"+encodeURIComponent(identifier.toLowerCase()); }
+  var THEME_KEY = "rafiq_theme_v1";
+  function getDeviceTheme(){ try{ return localStorage.getItem(THEME_KEY) || "dark"; }catch(e){ return "dark"; } }
+  function setDeviceTheme(v){ try{ localStorage.setItem(THEME_KEY, v); }catch(e){} }
+
+  var defaultState = {
+    name: "",
+    nickname: "",
+    onboarded: false,
+    theme: "dark",
+    focusAreas: [],
+    goals: [],
+    skills: [],
+    habits: [],
+    habitsLog: {},
+    wakeTime: "",
+    sleepTime: "",
+    schedule: [],
+    priorities: [],
+    tasks: [],
+    lastMood: null,
+    pledge: null,
+    agenda: [],
+    agendaNotified: {},
+    family: { role: null, members: [] }
+  };
+
+  /* ================= local encryption (AES-256-GCM, device-local key) ================= */
+  var ENC_KEY_STORAGE = "rafiq_dek_v1";
+  var deviceKeyPromise = null;
+  function bytesToB64(bytes){ var bin=""; for(var i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]); return btoa(bin); }
+  function b64ToBytes(b64){ var bin=atob(b64); var bytes=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i); return bytes; }
+  function getOrCreateDeviceKey(){
+    if(deviceKeyPromise) return deviceKeyPromise;
+    deviceKeyPromise = (async function(){
+      var raw = null;
+      try{ raw = localStorage.getItem(ENC_KEY_STORAGE); }catch(e){}
+      var keyBytes;
+      if(raw){ keyBytes = b64ToBytes(raw); }
+      else{
+        keyBytes = crypto.getRandomValues(new Uint8Array(32));
+        try{ localStorage.setItem(ENC_KEY_STORAGE, bytesToB64(keyBytes)); }catch(e){}
+      }
+      return crypto.subtle.importKey("raw", keyBytes, {name:"AES-GCM"}, false, ["encrypt","decrypt"]);
+    })();
+    return deviceKeyPromise;
+  }
+  async function encryptString(str){
+    var key = await getOrCreateDeviceKey();
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var cipherBuf = await crypto.subtle.encrypt({name:"AES-GCM", iv:iv}, key, new TextEncoder().encode(str));
+    var cipherBytes = new Uint8Array(cipherBuf);
+    var combined = new Uint8Array(iv.length + cipherBytes.length);
+    combined.set(iv,0); combined.set(cipherBytes, iv.length);
+    return bytesToB64(combined);
+  }
+  async function decryptString(b64){
+    var key = await getOrCreateDeviceKey();
+    var bytes = b64ToBytes(b64);
+    var iv = bytes.slice(0,12);
+    var cipherBytes = bytes.slice(12);
+    var plainBuf = await crypto.subtle.decrypt({name:"AES-GCM", iv:iv}, key, cipherBytes);
+    return new TextDecoder().decode(plainBuf);
+  }
+
+  async function loadState(){
+    var merged = JSON.parse(JSON.stringify(defaultState));
+    try{
+      var raw = STORE_KEY ? localStorage.getItem(STORE_KEY) : null;
+      if(raw){
+        var plain = await decryptString(raw);
+        merged = Object.assign({}, merged, JSON.parse(plain));
+      }
+    }catch(e){ /* nothing saved yet, or unreadable — start fresh */ }
+    merged.theme = getDeviceTheme();
+    return merged;
+  }
+  var state = JSON.parse(JSON.stringify(defaultState));
+  state.theme = getDeviceTheme();
+  applyTheme();
+  function saveState(){
+    if(!STORE_KEY) return;
+    encryptString(JSON.stringify(state)).then(function(cipher){
+      try{ localStorage.setItem(STORE_KEY, cipher); }catch(e){}
+    }).catch(function(){});
+  }
+
+  /* ================= password hashing + account registry (local, per-device) ================= */
+  var ACCOUNTS_KEY = "rafiq_accounts_v1";
+  var SESSION_KEY = "rafiq_session_v1";
+  var ATTEMPTS_KEY = "rafiq_attempts_v1";
+  function normId(v){ return v.trim().toLowerCase(); }
+  async function sha256Hex(str){
+    var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.prototype.map.call(new Uint8Array(buf), function(b){ return b.toString(16).padStart(2,"0"); }).join("");
+  }
+  function randomSaltHex(){
+    var arr = crypto.getRandomValues(new Uint8Array(16));
+    return Array.prototype.map.call(arr, function(b){ return b.toString(16).padStart(2,"0"); }).join("");
+  }
+  function getAccounts(){ try{ return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)) || {}; }catch(e){ return {}; } }
+  function saveAccounts(obj){ try{ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(obj)); }catch(e){} }
+  function getAccount(identifier){ return getAccounts()[normId(identifier)] || null; }
+  function setAccount(identifier, data){ var all = getAccounts(); all[normId(identifier)] = data; saveAccounts(all); }
+  function deleteAccount(identifier){ var all = getAccounts(); delete all[normId(identifier)]; saveAccounts(all); }
+  function getSession(){ try{ return localStorage.getItem(SESSION_KEY); }catch(e){ return null; } }
+  function setSession(identifier){ try{ localStorage.setItem(SESSION_KEY, normId(identifier)); }catch(e){} }
+  function clearSession(){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} }
+  function getAttempts(identifier){ try{ var all = JSON.parse(localStorage.getItem(ATTEMPTS_KEY))||{}; return all[normId(identifier)] || {count:0, lockUntil:0}; }catch(e){ return {count:0, lockUntil:0}; } }
+  function setAttempts(identifier, val){ try{ var all = JSON.parse(localStorage.getItem(ATTEMPTS_KEY))||{}; all[normId(identifier)] = val; localStorage.setItem(ATTEMPTS_KEY, JSON.stringify(all)); }catch(e){} }
+
+  /* ================= sample (AI) capability ================= */
+  var sampleNS = null;
+  var sampleChecked = false;
+  (function initCap(){
+    try{
+      if(window.claude && window.claude.use){
+        window.claude.use("sample").then(function(ns){ sampleNS = ns; sampleChecked = true; updateAiStatusNote(); }).catch(function(){ sampleNS = null; sampleChecked = true; updateAiStatusNote(); });
+      } else {
+        sampleChecked = true;
+      }
+    }catch(e){ sampleNS = null; sampleChecked = true; }
+    setTimeout(function(){ sampleChecked = true; updateAiStatusNote(); }, 3000);
+  })();
+  function updateAiStatusNote(){
+    var note = document.getElementById("aiStatusNote");
+    if(!note) return;
+    if(sampleChecked && !sampleNS){
+      note.textContent = t("ai_offline_note");
+      note.classList.remove("hidden");
+    } else {
+      note.classList.add("hidden");
+    }
+  }
+
+  function persona(){
+    var name = state.nickname || state.name || (lang==="ar"?"صديقي":"friend");
+    var focus = (state.focusAreas||[]).join(lang==="ar"?"، ":", ");
+    if(lang==="ar"){
+      return "انت 'رفيق' — رفيق "+name+" الشخصي جوا تطبيقه. مبني على نفس نموذج Claude، يعني عندك إلمام واسع بأي موضوع ومقدرتك الكاملة: تقدر تجاوب على أي سؤال (علمي، دراسي، برمجي، شخصي، عام...)، تشرح، تساعد تكتب، تحل مسائل، تخطط، تراجع كلام، أي شي يطلبه — بدون ما تحصر نفسك بموضوع الإنتاجية والجدولة بس. الاستثناء الوحيد إنك ما تساعد بشي محظور أو خطير فعليًا (زي محتوى غير قانوني أو يأذي أحد) — عدا كذا ساعده كامل وبلا تردد. "+
+        (focus? "الأشياء المهمة عنده حاليًا: "+focus+". ":"")+
+        "أسلوبك باللهجة السعودية (نجدية/حجازية عادية، اللي يتكلم فيها أغلب الناس بالسعودية) — مب لهجة خليجية عامة ومب كويتية ولا إماراتية. استخدم كلمات وتراكيب سعودية طبيعية زي: وش، كذا، أبد، يعطيك العافية، الحين، عادي، خلاص، تمام، ابشر، على راسي، ماشي — وتجنب كلمات مثل شنو، عليش، شحالك، شفيه اللي ما تنقال بالسعودية. اكتب زي وحد سعودي يكتب رسالة واتساب لصاحبه، طبيعي وسلس بدون تكلف. "+
+        "كن صريح وشفاف بدون مجاملة زايدة، وخلي طول ردك يناسب السؤال: لو سؤال بسيط أو دردشة رد بسطرين، ولو سؤال يحتاج شرح فعلي أو تفصيل جاوب بعمق وبالتفصيل اللازم بدون ما تختصر المعلومة المهمة. لا تحاضر ولا تكرر كلامه، واحترم وقته.";
+    }
+    return "You are 'Rafiq' — "+name+"'s personal companion inside their app. You're built on the same model as Claude, meaning you have broad knowledge of virtually any topic and full capability: answer any question (academic, technical, personal, general knowledge...), explain things, help write, solve problems, plan, review text — anything asked of you, not limited to productivity/scheduling talk. The only exception is genuinely prohibited or dangerous content (illegal activity, harm to others) — otherwise help fully and without hesitation. "+
+      (focus? "Things that matter to them right now: "+focus+". ":"")+
+      "Style: casual and natural, honest and transparent without empty flattery, talk like a close friend rather than a formal assistant. Match your reply length to the question: short for casual chat, thorough and detailed when the question genuinely needs depth — don't strip out important information just to be brief. Don't lecture or repeat their words back, and respect their time.";
+  }
+  async function askAI(prompt, onDelta, opts){
+    if(!sampleNS) return null;
+    opts = opts || {};
+    try{
+      var callOpts = { onText: onDelta ? function(ev){ onDelta(ev.text); } : undefined };
+      if(opts.cache!==undefined) callOpts.cache = opts.cache;
+      if(opts.modelTier) callOpts.modelTier = opts.modelTier;
+      var res = await sampleNS(prompt, callOpts);
+      return res && res.text ? res.text.trim() : null;
+    }catch(e){ return null; }
+  }
+  async function askAIJson(prompt){
+    if(!sampleNS) return null;
+    try{ return await sampleNS.json(prompt, {modelTier:"quick"}); }catch(e){ return null; }
+  }
+
+  /* ================= overlay control ================= */
+  function showOverlay(which){
+    document.getElementById("authScreen").classList.toggle("hidden", which!=="auth");
+    document.getElementById("onboardScreen").classList.toggle("hidden", which!=="onboard");
+    document.getElementById("appShell").classList.toggle("hidden", which!=="app");
+  }
+
+  /* ================= theme ================= */
+  function applyTheme(){
+    document.getElementById("htmlRoot").setAttribute("data-theme", state.theme);
+    var btn = document.getElementById("themeToggle");
+    if(btn) btn.textContent = state.theme==="dark" ? "☀️" : "🌙";
+  }
+  document.getElementById("themeToggle").addEventListener("click", function(){
+    state.theme = state.theme==="dark" ? "light" : "dark";
+    setDeviceTheme(state.theme);
+    applyTheme(); saveState();
+  });
+
+  /* ================= settings menu ================= */
+  var settingsMenu = document.getElementById("settingsMenu");
+  document.getElementById("avatarBtn").addEventListener("click", function(e){
+    e.stopPropagation();
+    settingsMenu.classList.toggle("open");
+  });
+  document.addEventListener("click", function(e){
+    if(!settingsMenu.contains(e.target) && e.target.id!=="avatarBtn") settingsMenu.classList.remove("open");
+  });
+  document.getElementById("menuChangeName").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    var name = prompt(t("prompt_new_name"), state.name);
+    if(name && name.trim()){ state.name = name.trim(); saveState(); renderAll(); }
+  });
+
+  function openInfoModal(icon, title, bodyHtml){
+    document.getElementById("infoModalIcon").textContent = icon;
+    document.getElementById("infoModalTitle").textContent = title;
+    document.getElementById("infoModalBody").innerHTML = bodyHtml;
+    document.getElementById("infoModal").classList.remove("hidden");
+  }
+  function baseModalClose(){ document.getElementById("infoModal").classList.add("hidden"); }
+  var infoModalCloseBtn = document.getElementById("infoModalClose");
+  infoModalCloseBtn.textContent = t("modal_close");
+  infoModalCloseBtn.addEventListener("click", baseModalClose);
+  function privacyBodyHtml(){
+    return "<p>"+t("privacy_body_p1")+"</p><p>"+t("privacy_body_p2")+"</p><p>"+t("privacy_body_p3")+"</p><p>"+t("privacy_body_p4")+"</p>";
+  }
+  function pledgeBodyHtml(){
+    var name = state.nickname||state.name||"";
+    var html = "<p>"+t("pledge_body_p1").replace("{name}", escapeHtml(name))+"</p>";
+    html += "<p>• "+t("pledge_item1")+"</p><p>• "+t("pledge_item2")+"</p><p>• "+t("pledge_item3")+"</p><p>• "+t("pledge_item4")+"</p>";
+    if(state.pledge && state.pledge.accepted){
+      html += "<div class=\"pledge-sign\">✍️ "+escapeHtml(name)+" — "+t("pledge_signed_on")+" "+state.pledge.date+"</div>";
+    } else {
+      html += "<p style=\"color:var(--text-faint);\">"+t("pledge_not_signed")+"</p>";
+    }
+    return html;
+  }
+  document.getElementById("menuPrivacy").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    infoModalCloseBtn.textContent = t("modal_close");
+    openInfoModal("🔒", t("privacy_title"), privacyBodyHtml());
+  });
+  document.getElementById("menuPledge").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    if(!state.pledge || !state.pledge.accepted){
+      var name = state.nickname||state.name||"";
+      var html = "<p>"+t("pledge_body_p1").replace("{name}", escapeHtml(name))+"</p>";
+      html += "<p>• "+t("pledge_item1")+"</p><p>• "+t("pledge_item2")+"</p><p>• "+t("pledge_item3")+"</p><p>• "+t("pledge_item4")+"</p>";
+      openInfoModal("🤝", t("pledge_title"), html);
+      infoModalCloseBtn.textContent = t("pledge_sign_btn");
+      infoModalCloseBtn.removeEventListener("click", baseModalClose);
+      var onSign = function(){
+        state.pledge = { accepted:true, date: new Date().toLocaleDateString(lang==="ar"?"ar-SA":"en-US") };
+        saveState();
+        infoModalCloseBtn.textContent = t("modal_close");
+        infoModalCloseBtn.removeEventListener("click", onSign);
+        infoModalCloseBtn.addEventListener("click", baseModalClose);
+        document.getElementById("infoModalBody").innerHTML = pledgeBodyHtml();
+      };
+      infoModalCloseBtn.addEventListener("click", onSign);
+    } else {
+      infoModalCloseBtn.textContent = t("modal_close");
+      openInfoModal("🤝", t("pledge_title"), pledgeBodyHtml());
+    }
+  });
+
+  /* ================= family system (local preview) ================= */
+  function renderFamilyScreen(){
+    var role = state.family.role;
+    document.getElementById("familyRoleChoice").classList.toggle("hidden", !!role);
+    document.getElementById("familyAdminView").classList.toggle("hidden", role!=="admin");
+    document.getElementById("familyMemberView").classList.toggle("hidden", role!=="member");
+    document.getElementById("familyIntro").textContent = t(role==="admin"?"family_intro_admin":role==="member"?"family_intro_member":"family_intro_none");
+    if(role==="admin") renderFamilyMembers();
+  }
+  function renderFamilyMembers(){
+    var wrap = document.getElementById("familyMembersList");
+    if(state.family.members.length===0){ wrap.innerHTML = '<p class="empty-hint">'+t("family_no_members")+'</p>'; return; }
+    wrap.innerHTML = state.family.members.map(function(m){
+      return '<div class="member-row"><span class="member-avatar">'+escapeHtml(m.name.charAt(0).toUpperCase())+'</span>'+
+        '<span class="lr-text" style="flex:1;">'+escapeHtml(m.name)+'</span>'+
+        '<button class="lr-del" data-del-member="'+m.id+'">✕</button></div>';
+    }).join("");
+    wrap.querySelectorAll("[data-del-member]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id = b.getAttribute("data-del-member");
+        state.family.members = state.family.members.filter(function(m){ return m.id!==id; });
+        state.agenda.forEach(function(i){ if(i.assignedTo===id) i.assignedTo=null; });
+        saveState(); renderFamilyMembers(); renderAgendaScreen();
+      });
+    });
+  }
+  document.getElementById("menuFamily").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    renderFamilyScreen();
+    document.getElementById("familyModal").classList.remove("hidden");
+  });
+  document.getElementById("familyCloseBtn").addEventListener("click", function(){
+    document.getElementById("familyModal").classList.add("hidden");
+  });
+  document.getElementById("pickRoleAdmin").addEventListener("click", function(){
+    state.family.role = "admin"; saveState(); renderFamilyScreen();
+  });
+  document.getElementById("pickRoleMember").addEventListener("click", function(){
+    state.family.role = "member"; saveState(); renderFamilyScreen();
+  });
+  document.getElementById("addMemberBtn").addEventListener("click", function(){
+    var inp = document.getElementById("newMemberName");
+    var v = inp.value.trim();
+    if(!v) return;
+    state.family.members.push({id:uid(), name:v});
+    saveState(); inp.value=""; renderFamilyMembers();
+  });
+  document.getElementById("newMemberName").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addMemberBtn").click(); });
+
+  document.getElementById("menuLogout").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    clearSession();
+    STORE_KEY = null;
+    state = JSON.parse(JSON.stringify(defaultState));
+    state.theme = getDeviceTheme();
+    var accounts = getAccounts();
+    authMode = Object.keys(accounts).length>0 ? "login" : "signup";
+    renderAuthScreen2();
+    showOverlay("auth");
+  });
+  document.getElementById("menuDelete").addEventListener("click", function(){
+    settingsMenu.classList.remove("open");
+    if(confirm(t("settings_delete_confirm"))){
+      var session = getSession();
+      if(session){
+        try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+        deleteAccount(session);
+        clearSession();
+      }
+      STORE_KEY = null;
+      state = JSON.parse(JSON.stringify(defaultState));
+      state.theme = getDeviceTheme();
+      var accounts = getAccounts();
+      authMode = Object.keys(accounts).length>0 ? "login" : "signup";
+      renderAuthScreen2();
+      showOverlay("auth");
+    }
+  });
+
+  /* ================= onboarding ================= */
+  var onboardSteps = ["about","growth","habits","schedule","priorities","pledge","summary"];
+  var onboardStep = 0;
+  var onboardData = { name:"", nickname:"", focusAreas:[], goals:[], skills:[], habits:[], wakeTime:"", sleepTime:"", schedule:[], priorities:[] };
+  var focusPresetKeys = ["work","study","health","money","relationships","learning","hobbies"];
+  var onboardIcons = { about:"👋", growth:"🌱", habits:"🔁", schedule:"🗓️", priorities:"🎯", pledge:"🤝", summary:"🎉" };
+
+  function uid(){ return Date.now()+"_"+Math.random().toString(36).slice(2,7); }
+  function pad2(n){ return n<10?"0"+n:""+n; }
+  function dateKeyOffset(daysAgo){ var d=new Date(); d.setDate(d.getDate()-daysAgo); return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
+  function todayKey(){ return dateKeyOffset(0); }
+  function isHabitDoneOn(habitId, dateKey){ return !!(state.habitsLog[habitId] && state.habitsLog[habitId][dateKey]); }
+  function setHabitDoneOn(habitId, dateKey, val){
+    if(!state.habitsLog[habitId]) state.habitsLog[habitId] = {};
+    if(val) state.habitsLog[habitId][dateKey] = true; else delete state.habitsLog[habitId][dateKey];
+  }
+  function habitStreak(habitId){
+    var streak=0;
+    for(var i=0;i<365;i++){ if(isHabitDoneOn(habitId, dateKeyOffset(i))) streak++; else break; }
+    return streak;
+  }
+
+  /* ================= agenda date/recurrence helpers ================= */
+  function parseDateKey(dk){ var p=dk.split("-"); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
+  function toDateKeyD(d){ return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
+  function occurrencesInRange(item, rangeStart, rangeEnd){
+    var start = parseDateKey(item.date);
+    var results = [];
+    if(item.recurring==="none" || !item.recurring){
+      if(start>=rangeStart && start<=rangeEnd) results.push(new Date(start));
+      return results;
+    }
+    if(item.recurring==="daily"){
+      var c = new Date(Math.max(start.getTime(), rangeStart.getTime()));
+      while(c<=rangeEnd){ results.push(new Date(c)); c.setDate(c.getDate()+1); }
+    } else if(item.recurring==="weekly"){
+      var c2 = new Date(start);
+      while(c2<rangeStart) c2.setDate(c2.getDate()+7);
+      while(c2<=rangeEnd){ results.push(new Date(c2)); c2.setDate(c2.getDate()+7); }
+    } else if(item.recurring==="monthly"){
+      var c3 = new Date(start);
+      while(c3<rangeStart) c3.setMonth(c3.getMonth()+1);
+      while(c3<=rangeEnd){ results.push(new Date(c3)); c3.setMonth(c3.getMonth()+1); }
+    } else if(item.recurring==="yearly"){
+      var c4 = new Date(start);
+      while(c4<rangeStart) c4.setFullYear(c4.getFullYear()+1);
+      while(c4<=rangeEnd){ results.push(new Date(c4)); c4.setFullYear(c4.getFullYear()+1); }
+    }
+    return results;
+  }
+  function nextOccurrence(item){
+    var today = new Date(); today.setHours(0,0,0,0);
+    var farEnd = new Date(today); farEnd.setFullYear(farEnd.getFullYear()+2);
+    var occ = occurrencesInRange(item, today, farEnd);
+    return occ.length ? occ[0] : null;
+  }
+  function fmtDayLabel(d){
+    var todayStr = toDateKeyD(new Date());
+    var tmr = new Date(); tmr.setDate(tmr.getDate()+1);
+    var dk = toDateKeyD(d);
+    if(dk===todayStr) return lang==="ar" ? "اليوم" : "Today";
+    if(dk===toDateKeyD(tmr)) return lang==="ar" ? "بكرة" : "Tomorrow";
+    return d.toLocaleDateString(lang==="ar"?"ar-SA":"en-US", {day:"numeric", month:"short"});
+  }
+  function monthShort(d){ return d.toLocaleDateString(lang==="ar"?"ar-SA":"en-US", {month:"short"}); }
+
+  function assigneeBadgeHtml(item){
+    if(!item.assignedTo) return "";
+    var m = state.family.members.filter(function(x){return x.id===item.assignedTo;})[0];
+    if(!m) return "";
+    return '<span class="assignee-badge">👤 '+escapeHtml(m.name)+'</span>';
+  }
+  /* ================= agenda: render lists ================= */
+  function apptCardHtml(item, occ){
+    return '<div class="agenda-card" data-agenda-id="'+item.id+'">'+
+      '<div class="ac-date"><span class="d">'+occ.getDate()+'</span><span class="m">'+monthShort(occ)+'</span></div>'+
+      '<div class="ac-info"><div class="ac-title">'+escapeHtml(item.title)+'</div><div class="ac-meta">'+(item.time||"")+
+      (item.recurring&&item.recurring!=="none"? ' · <span class="rec-badge">🔁 '+t("recurring_"+item.recurring)+'</span>' : '')+'</div></div>'+
+      assigneeBadgeHtml(item)+
+      '</div>';
+  }
+  function taskCardHtml(item){
+    var occ = nextOccurrence(item);
+    return '<div class="agenda-card'+(item.done?' done':'')+'" data-agenda-id="'+item.id+'">'+
+      '<input type="checkbox" class="ac-check" data-toggle-task="'+item.id+'" '+(item.done?'checked':'')+'>'+
+      '<div class="ac-info"><div class="ac-title">'+escapeHtml(item.title)+'</div><div class="ac-meta">'+(occ?fmtDayLabel(occ):"")+(item.time?" "+item.time:"")+'</div></div>'+
+      skillTagHtml(item.skillId)+
+      assigneeBadgeHtml(item)+
+      '<span class="prio-badge '+item.priority+'">'+t("priority_"+item.priority)+'</span>'+
+      '</div>';
+  }
+  function wireAgendaCardClicks(){
+    document.querySelectorAll("[data-agenda-id]").forEach(function(card){
+      card.addEventListener("click", function(e){
+        if(e.target.closest("[data-toggle-task]")) return;
+        openAgendaForm(null, card.getAttribute("data-agenda-id"));
+      });
+    });
+    document.querySelectorAll("[data-toggle-task]").forEach(function(cb){
+      cb.addEventListener("click", function(e){ e.stopPropagation(); });
+      cb.addEventListener("change", function(){
+        var id = cb.getAttribute("data-toggle-task");
+        var item = state.agenda.filter(function(i){return i.id===id;})[0];
+        if(item){
+          var wasDone = item.done;
+          item.done = cb.checked;
+          if(item.skillId){
+            if(cb.checked && !wasDone) bumpSkillFromTask(item.skillId, 1);
+            else if(!cb.checked && wasDone) bumpSkillFromTask(item.skillId, -1);
+          }
+        }
+        saveState(); renderAgendaScreen(); renderTodayAgendaSummary(); renderGoals();
+      });
+    });
+  }
+  function renderAgendaScreen(){
+    var el = document.getElementById("apptsUpcomingList");
+    if(!el) return; // screen not in DOM yet
+    var appts = state.agenda.filter(function(i){return i.kind==="appt";});
+    var tasksArr = state.agenda.filter(function(i){return i.kind==="task";});
+
+    var upcoming=[], past=[];
+    appts.forEach(function(i){
+      var occ = nextOccurrence(i);
+      if(occ) upcoming.push({item:i, occ:occ}); else past.push(i);
+    });
+    upcoming.sort(function(a,b){
+      var ak=toDateKeyD(a.occ)+(a.item.time||""), bk=toDateKeyD(b.occ)+(b.item.time||"");
+      return ak<bk?-1:(ak>bk?1:0);
+    });
+    document.getElementById("apptsUpcomingList").innerHTML = upcoming.length ? upcoming.map(function(x){return apptCardHtml(x.item,x.occ);}).join("") : '<p class="empty-hint">'+t("appt_empty")+'</p>';
+    document.getElementById("apptsPastList").innerHTML = past.length ? past.map(function(i){return apptCardHtml(i, parseDateKey(i.date));}).join("") : '';
+
+    var incomplete = tasksArr.filter(function(i){return !i.done;});
+    var done = tasksArr.filter(function(i){return i.done;});
+    incomplete.sort(function(a,b){
+      var oa=nextOccurrence(a), ob=nextOccurrence(b);
+      var ak=oa?toDateKeyD(oa):"9999-99-99", bk=ob?toDateKeyD(ob):"9999-99-99";
+      return ak<bk?-1:(ak>bk?1:0);
+    });
+    document.getElementById("tasksIncompleteList").innerHTML = incomplete.length ? incomplete.map(taskCardHtml).join("") : '<p class="empty-hint">'+t("task_empty")+'</p>';
+    document.getElementById("tasksDoneList").innerHTML = done.length ? done.map(taskCardHtml).join("") : '';
+
+    wireAgendaCardClicks();
+  }
+  document.getElementById("agendaSubTabs").querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.getElementById("agendaSubTabs").querySelectorAll("button").forEach(function(x){x.classList.remove("active");});
+      b.classList.add("active");
+      var sub = b.getAttribute("data-sub");
+      document.getElementById("agendaApptsView").classList.toggle("hidden", sub!=="appts");
+      document.getElementById("agendaTasksView").classList.toggle("hidden", sub!=="tasks");
+      document.getElementById("openAddAppt").style.display = sub==="appts" ? "block" : "none";
+      document.getElementById("openAddTask").style.display = sub==="tasks" ? "block" : "none";
+    });
+  });
+
+  /* ================= agenda: add/edit form ================= */
+  var agEditingId = null;
+  var agFormKind = "appt";
+  var agFormAssignee = null;
+  function openAgendaForm(kind, editId){
+    agEditingId = editId || null;
+    var item = editId ? state.agenda.filter(function(i){return i.id===editId;})[0] : null;
+    agFormKind = item ? item.kind : (kind||"appt");
+
+    document.getElementById("agendaFormIcon").textContent = agFormKind==="appt" ? "📅" : "✅";
+    document.getElementById("agendaFormTitle").textContent = agFormKind==="appt" ? t("agenda_tab_appts") : t("agenda_tab_tasks");
+    document.getElementById("agTitle").placeholder = agFormKind==="appt" ? t("appt_title_ph") : t("task_title_ph");
+    document.getElementById("agDesc").placeholder = agFormKind==="appt" ? t("appt_desc_ph") : t("task_desc_ph");
+    document.getElementById("agDateLabel").textContent = agFormKind==="appt" ? t("appt_date_label") : t("task_due_label");
+    document.getElementById("agTimeLabel").textContent = t("appt_time_label");
+    document.getElementById("agRecurringLabel").textContent = t("appt_recurring_label");
+    document.getElementById("agReminderLabel").textContent = t("reminder_label");
+    document.getElementById("agPriorityField").classList.toggle("hidden", agFormKind!=="task");
+    document.getElementById("agSkillField").classList.toggle("hidden", agFormKind!=="task");
+    populateSkillSelect(document.getElementById("agSkillSelect"), item ? (item.skillId||null) : null);
+
+    document.getElementById("agTitle").value = item ? item.title : "";
+    document.getElementById("agDesc").value = item ? (item.desc||"") : "";
+    document.getElementById("agDate").value = item ? item.date : todayKey();
+    document.getElementById("agTime").value = item ? (item.time||"") : "";
+    document.getElementById("agRecurring").value = item ? item.recurring : "none";
+    document.getElementById("agReminder").value = item ? item.reminder : "none";
+    var prio = item ? item.priority : "medium";
+    document.getElementById("agPriorityToggle").querySelectorAll("button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-p")===prio); });
+
+    var assignField = document.getElementById("agAssignField");
+    var famHint = document.getElementById("agFamilyHint");
+    var showAssign = state.family.role==="admin" && state.family.members.length>0;
+    assignField.classList.toggle("hidden", !showAssign);
+    famHint.classList.toggle("hidden", !showAssign);
+    agFormAssignee = item ? (item.assignedTo||null) : null;
+    if(showAssign){
+      var chipsWrap = document.getElementById("agAssignChips");
+      var opts = [{id:null, name:t("family_assignee_me")}].concat(state.family.members);
+      chipsWrap.innerHTML = opts.map(function(m){
+        return '<button type="button" class="chip'+(agFormAssignee===m.id?' active':'')+'" data-assignee="'+(m.id||"")+'">'+escapeHtml(m.name)+'</button>';
+      }).join("");
+      chipsWrap.querySelectorAll("[data-assignee]").forEach(function(b){
+        b.addEventListener("click", function(){
+          agFormAssignee = b.getAttribute("data-assignee") || null;
+          chipsWrap.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("active"); });
+          b.classList.add("active");
+        });
+      });
+    }
+
+    document.getElementById("agDeleteBtn").classList.toggle("hidden", !editId);
+    document.getElementById("agError").textContent = "";
+    document.getElementById("agendaFormModal").classList.remove("hidden");
+  }
+  document.getElementById("openAddAppt").addEventListener("click", function(){ openAgendaForm("appt", null); });
+  document.getElementById("openAddTask").addEventListener("click", function(){ openAgendaForm("task", null); });
+  document.getElementById("agPriorityToggle").querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      document.getElementById("agPriorityToggle").querySelectorAll("button").forEach(function(x){x.classList.remove("active");});
+      b.classList.add("active");
+    });
+  });
+  document.getElementById("agCancelBtn").addEventListener("click", function(){ document.getElementById("agendaFormModal").classList.add("hidden"); });
+  document.getElementById("agSaveBtn").addEventListener("click", function(){
+    var title = document.getElementById("agTitle").value.trim();
+    var err = document.getElementById("agError");
+    var date = document.getElementById("agDate").value;
+    if(!title || !date){ err.textContent = t("auth2_fill_all"); return; }
+    var payload = {
+      title: title,
+      desc: document.getElementById("agDesc").value.trim(),
+      date: date,
+      time: document.getElementById("agTime").value,
+      recurring: document.getElementById("agRecurring").value,
+      reminder: document.getElementById("agReminder").value,
+      assignedTo: (state.family.role==="admin" && state.family.members.length>0) ? agFormAssignee : null
+    };
+    if(agFormKind==="task"){
+      var activeP = document.getElementById("agPriorityToggle").querySelector("button.active");
+      payload.priority = activeP ? activeP.getAttribute("data-p") : "medium";
+      payload.skillId = document.getElementById("agSkillSelect").value || null;
+    }
+    if(agEditingId){
+      state.agenda.forEach(function(i){ if(i.id===agEditingId) Object.assign(i, payload); });
+    } else {
+      payload.id = uid(); payload.kind = agFormKind; payload.done = false;
+      state.agenda.push(payload);
+    }
+    saveState();
+    document.getElementById("agendaFormModal").classList.add("hidden");
+    renderAgendaScreen(); renderTodayAgendaSummary();
+    if(payload.reminder!=="none") maybeAskNotifPermission();
+  });
+  document.getElementById("agDeleteBtn").addEventListener("click", function(){
+    if(!agEditingId) return;
+    state.agenda = state.agenda.filter(function(i){ return i.id!==agEditingId; });
+    saveState();
+    document.getElementById("agendaFormModal").classList.add("hidden");
+    renderAgendaScreen(); renderTodayAgendaSummary();
+  });
+
+  /* ================= agenda: calendar ================= */
+  var calViewDate = new Date();
+  document.getElementById("openCalendarBtn").addEventListener("click", function(){
+    calViewDate = new Date();
+    renderCalendar();
+    document.getElementById("calendarModal").classList.remove("hidden");
+  });
+  document.getElementById("calCloseBtn").addEventListener("click", function(){ document.getElementById("calendarModal").classList.add("hidden"); });
+  document.getElementById("calPrevBtn").addEventListener("click", function(){ calViewDate.setMonth(calViewDate.getMonth()-1); renderCalendar(); });
+  document.getElementById("calNextBtn").addEventListener("click", function(){ calViewDate.setMonth(calViewDate.getMonth()+1); renderCalendar(); });
+  function showDayAgenda(dateKeyStr){
+    var dayDate = parseDateKey(dateKeyStr);
+    var items = state.agenda.filter(function(item){ return occurrencesInRange(item, dayDate, dayDate).length>0; });
+    var body = document.getElementById("calDayAgenda");
+    if(items.length===0){ body.innerHTML = '<p style="color:var(--text-faint); text-align:center;">'+t("today_agenda_empty")+'</p>'; return; }
+    body.innerHTML = items.map(function(i){
+      return '<p>'+(i.kind==="appt"?"📅":"✅")+' <strong>'+escapeHtml(i.title)+'</strong>'+(i.time?' — '+i.time:'')+'</p>';
+    }).join("");
+  }
+  function renderCalendar(){
+    var y=calViewDate.getFullYear(), m=calViewDate.getMonth();
+    document.getElementById("calMonthLabel").textContent = calViewDate.toLocaleDateString(lang==="ar"?"ar-SA":"en-US", {month:"long", year:"numeric"});
+    var first = new Date(y,m,1), last = new Date(y,m+1,0);
+    var startOffset = first.getDay();
+    var dows = lang==="ar" ? ["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"] : ["Su","Mo","Tu","We","Th","Fr","Sa"];
+    var html = dows.map(function(d){return '<div class="cal-dow">'+d+'</div>';}).join("");
+    for(var i=0;i<startOffset;i++) html += '<div class="cal-day empty"></div>';
+    var monthStart = new Date(y,m,1), monthEnd = new Date(y,m,last.getDate());
+    var dayHasItems = {};
+    state.agenda.forEach(function(item){
+      occurrencesInRange(item, monthStart, monthEnd).forEach(function(occ){ dayHasItems[toDateKeyD(occ)] = true; });
+    });
+    var todayStr = todayKey();
+    for(var d=1; d<=last.getDate(); d++){
+      var dk = y+"-"+pad2(m+1)+"-"+pad2(d);
+      var cls = "cal-day"+(dayHasItems[dk]?" has-items":"")+(dk===todayStr?" today":"");
+      html += '<div class="'+cls+'" data-day="'+dk+'">'+d+'</div>';
+    }
+    document.getElementById("calGrid").innerHTML = html;
+    document.getElementById("calGrid").querySelectorAll("[data-day]").forEach(function(cell){
+      cell.addEventListener("click", function(){
+        document.getElementById("calGrid").querySelectorAll(".cal-day").forEach(function(c){c.classList.remove("selected");});
+        cell.classList.add("selected");
+        showDayAgenda(cell.getAttribute("data-day"));
+      });
+    });
+    if(y===new Date().getFullYear() && m===new Date().getMonth()){ showDayAgenda(todayStr); }
+    else{ document.getElementById("calDayAgenda").innerHTML = ""; }
+  }
+
+  /* ================= today screen: agenda summary ================= */
+  function renderTodayAgendaSummary(){
+    var body = document.getElementById("todayAgendaBody");
+    if(!body) return;
+    var todayStr = todayKey();
+    var appts = state.agenda.filter(function(i){return i.kind==="appt";});
+    var tasksArr = state.agenda.filter(function(i){return i.kind==="task";});
+
+    var withNext = appts.map(function(i){ return {item:i, occ:nextOccurrence(i)}; }).filter(function(x){return x.occ;});
+    withNext.sort(function(a,b){
+      var ak=toDateKeyD(a.occ)+(a.item.time||""), bk=toDateKeyD(b.occ)+(b.item.time||"");
+      return ak<bk?-1:(ak>bk?1:0);
+    });
+    var nextAppt = withNext[0];
+
+    var dueToday = tasksArr.filter(function(i){ var occ=nextOccurrence(i); return occ && toDateKeyD(occ)===todayStr && !i.done; });
+    var incomplete = tasksArr.filter(function(i){ return !i.done; });
+
+    var now = new Date();
+    var remindersToday = state.agenda.filter(function(i){
+      if(i.reminder==="none" || !i.time) return false;
+      var occ = nextOccurrence(i); if(!occ || toDateKeyD(occ)!==todayStr) return false;
+      var tp=i.time.split(":"); var dt=new Date(occ.getFullYear(),occ.getMonth(),occ.getDate(),parseInt(tp[0],10)||0,parseInt(tp[1],10)||0);
+      var remindAt = new Date(dt.getTime() - (parseInt(i.reminder,10)||0)*60000);
+      return remindAt>=now;
+    });
+
+    if(appts.length===0 && tasksArr.length===0){
+      body.innerHTML = '<p class="empty-hint">'+t("today_agenda_empty")+'</p>';
+      return;
+    }
+    var rows = [
+      {ic:"📅", label:t("today_next_appt"), val: nextAppt ? (nextAppt.item.title+" · "+fmtDayLabel(nextAppt.occ)+(nextAppt.item.time?" "+nextAppt.item.time:"")) : "—"},
+      {ic:"✅", label:t("today_due_today"), val: dueToday.length},
+      {ic:"📋", label:t("today_incomplete_tasks"), val: incomplete.length},
+      {ic:"⏰", label:t("today_upcoming_reminders"), val: remindersToday.length}
+    ];
+    body.innerHTML = rows.map(function(r){
+      return '<div class="mini-row"><span class="t">'+r.ic+' '+escapeHtml(r.label)+'</span><span>'+escapeHtml(String(r.val))+'</span></div>';
+    }).join("");
+  }
+
+  /* ================= agenda: notifications & reminder polling ================= */
+  function maybeAskNotifPermission(){
+    if(!window.Notification) return;
+    if(Notification.permission==="default"){
+      document.getElementById("notifAskModal").classList.remove("hidden");
+    }
+  }
+  document.getElementById("notifAllowBtn").addEventListener("click", function(){
+    document.getElementById("notifAskModal").classList.add("hidden");
+    try{ Notification.requestPermission(); }catch(e){}
+  });
+  document.getElementById("notifLaterBtn").addEventListener("click", function(){
+    document.getElementById("notifAskModal").classList.add("hidden");
+  });
+  function fireReminder(item, occDate){
+    var title = (item.kind==="appt"?"📅 ":"✅ ") + item.title;
+    var bodyText = (item.time||"") + (item.desc? " — "+item.desc : "");
+    try{
+      if(window.Notification && Notification.permission==="granted"){
+        new Notification(title, { body: bodyText, tag: item.id });
+      }
+    }catch(e){}
+  }
+  function checkReminders(){
+    if(!state.agenda || state.agenda.length===0) return;
+    var now = new Date();
+    var changed = false;
+    state.agenda.forEach(function(item){
+      if(item.reminder==="none" || !item.time) return;
+      var occ = nextOccurrence(item);
+      if(!occ) return;
+      var occKey = item.id+"|"+toDateKeyD(occ);
+      if(state.agendaNotified[occKey]) return;
+      var tp = item.time.split(":");
+      var occDateTime = new Date(occ.getFullYear(), occ.getMonth(), occ.getDate(), parseInt(tp[0],10)||0, parseInt(tp[1],10)||0);
+      var remindAt = new Date(occDateTime.getTime() - (parseInt(item.reminder,10)||0)*60000);
+      if(now>=remindAt && now<=occDateTime){
+        fireReminder(item, occ);
+        state.agendaNotified[occKey] = true;
+        changed = true;
+      }
+    });
+    if(changed) saveState();
+    renderTodayAgendaSummary();
+  }
+  var reminderIntervalStarted = false;
+  function startReminderPolling(){
+    if(reminderIntervalStarted) return;
+    reminderIntervalStarted = true;
+    checkReminders();
+    setInterval(checkReminders, 30000);
+  }
+
+  function progressDots(){
+    var html = '<div class="onboard-progress">';
+    onboardSteps.forEach(function(_,i){ html += '<span class="onboard-dot'+(i===onboardStep?' active':'')+'"></span>'; });
+    return html+'</div>';
+  }
+  function obTagListHtml(arr, removeAttr){
+    if(arr.length===0) return '';
+    var html = '<div style="display:flex;flex-direction:column;gap:8px;">';
+    arr.forEach(function(item, i){
+      html += '<div class="list-row"><span class="lr-text">'+escapeHtml(item.label!==undefined?item.label:item)+'</span><button class="lr-del" data-'+removeAttr+'-idx="'+i+'">✕</button></div>';
+    });
+    return html+'</div>';
+  }
+  function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+
+  function renderOnboardStep(){
+    var box = document.getElementById("onboardBox");
+    var key = onboardSteps[onboardStep];
+    var html = progressDots();
+    html += '<div class="ob-step-in" id="obStepWrap">';
+    html += '<div class="auth-logo">'+onboardIcons[key]+'</div>';
+
+    if(key==="about"){
+      html += '<h1 class="auth-title">'+t("ob_about_title")+'</h1>';
+      html += '<div class="field"><label>'+t("ob_name_label")+'</label><input class="mini-input" id="obName" placeholder="'+t("ob_name_ph")+'" value="'+escapeHtml(onboardData.name)+'"></div>';
+      html += '<div class="field"><label>'+t("ob_nickname_label")+'</label><input class="mini-input" id="obNickname" placeholder="'+t("ob_nickname_ph")+'" value="'+escapeHtml(onboardData.nickname)+'"></div>';
+      html += '<div class="field"><label>'+t("ob_focus_title")+'</label>';
+      html += '<div class="chip-row" id="obFocusRow">';
+      focusPresetKeys.forEach(function(fk){
+        var active = onboardData.focusAreas.indexOf(t("focus_"+fk))>-1 || onboardData.focusAreas.indexOf(fk)>-1;
+        html += '<button type="button" class="chip'+(active?' active':'')+'" data-focus="'+fk+'">'+t("focus_"+fk)+'</button>';
+      });
+      onboardData.focusAreas.forEach(function(fa){
+        if(focusPresetKeys.some(function(fk){ return t("focus_"+fk)===fa; })) return;
+        html += '<button type="button" class="chip active" data-custom-focus="'+escapeHtml(fa)+'">'+escapeHtml(fa)+' ✕</button>';
+      });
+      html += '</div>';
+      html += '<div class="add-row" style="margin-top:8px;"><input class="mini-input" id="obFocusOther" placeholder="'+t("ob_focus_other_ph")+'"><button class="add-go" id="obFocusAddBtn">+</button></div>';
+      html += '</div>';
+    } else if(key==="growth"){
+      html += '<h1 class="auth-title" style="font-size:19px;">'+t("ob_goals_title")+'</h1>';
+      html += '<div class="add-row"><input class="mini-input" id="obGoalInput" placeholder="'+t("ob_goals_ph")+'"><button class="add-go" id="obGoalAddBtn">+</button></div>';
+      html += '<div id="obGoalsList">'+obTagListHtml(onboardData.goals, "goal")+'</div>';
+      html += '<div style="height:2px;"></div>';
+      html += '<h1 class="auth-title" style="font-size:19px;">'+t("ob_skills_title")+'</h1>';
+      html += '<div class="field"><input class="mini-input" id="obSkillName" placeholder="'+t("ob_skill_name_ph")+'"></div>';
+      html += '<div class="field-row" style="display:flex; gap:8px;">'+
+        '<div class="field" style="flex:1;"><label>'+t("ob_skill_current")+' (0-10)</label><input class="mini-input" id="obSkillCurrent" type="number" min="0" max="10" value="3"></div>'+
+        '<div class="field" style="flex:1;"><label>'+t("ob_skill_target")+' (0-10)</label><input class="mini-input" id="obSkillTarget" type="number" min="0" max="10" value="8"></div></div>';
+      html += '<div class="field"><label>'+t("ob_skill_hours")+'</label><input class="mini-input" id="obSkillHours" type="number" min="0" value="2"></div>';
+      html += '<button type="button" class="btn ghost" id="obSkillAddBtn">+ '+t("ob_add")+'</button>';
+      html += '<div id="obSkillsList" style="display:flex;flex-direction:column;gap:8px;">';
+      onboardData.skills.forEach(function(sk, i){
+        html += '<div class="list-row"><span class="lr-text">'+escapeHtml(sk.name)+' ('+sk.current+'→'+sk.target+', '+sk.hours+'h)</span><button class="lr-del" data-skill-idx="'+i+'">✕</button></div>';
+      });
+      html += '</div><p class="auth-hint">'+t("ob_skip_hint")+'</p>';
+    } else if(key==="habits"){
+      html += '<h1 class="auth-title">'+t("ob_habits_title")+'</h1>';
+      html += '<div class="add-row"><input class="mini-input" id="obHabitInput" placeholder="'+t("ob_habit_ph")+'"></div>';
+      html += '<div class="type-toggle" id="obHabitType" style="margin-top:8px;"><button type="button" class="active" data-type="build">🌱 '+t("habit_build")+'</button><button type="button" data-type="quit">🚫 '+t("habit_quit")+'</button></div>';
+      html += '<button type="button" class="btn ghost" style="margin-top:8px;" id="obHabitAddBtn">+ '+t("ob_add")+'</button>';
+      html += '<div id="obHabitsList" style="display:flex;flex-direction:column;gap:8px; margin-top:4px;">';
+      onboardData.habits.forEach(function(h, i){
+        html += '<div class="habit-row"><span class="habit-tag '+h.type+'">'+t("habit_"+h.type)+'</span><span class="lr-text" style="flex:1;">'+escapeHtml(h.text)+'</span><button class="lr-del" data-habit-idx="'+i+'">✕</button></div>';
+      });
+      html += '</div><p class="auth-hint">'+t("ob_skip_hint")+'</p>';
+    } else if(key==="schedule"){
+      html += '<h1 class="auth-title">'+t("ob_schedule_title")+'</h1>';
+      html += '<div class="field-row" style="display:flex; gap:8px;">'+
+        '<div class="field" style="flex:1;"><label>'+t("ob_wake_label")+'</label><input class="mini-input" id="obWake" type="time" value="'+escapeHtml(onboardData.wakeTime)+'"></div>'+
+        '<div class="field" style="flex:1;"><label>'+t("ob_sleep_label")+'</label><input class="mini-input" id="obSleep" type="time" value="'+escapeHtml(onboardData.sleepTime)+'"></div></div>';
+      html += '<div class="add-row"><input class="mini-input" id="obBlockLabel" placeholder="'+t("ob_block_label_ph")+'"><input class="mini-input add-sched-time" id="obBlockTime" type="time"><button class="add-go" id="obBlockAddBtn">+</button></div>';
+      html += '<div id="obScheduleList" style="display:flex;flex-direction:column;gap:8px;">';
+      onboardData.schedule.forEach(function(s, i){
+        html += '<div class="list-row"><span class="lr-text">'+escapeHtml(s.label)+'</span><span style="color:var(--text-faint);font-size:12px;">'+escapeHtml(s.time||"")+'</span><button class="lr-del" data-block-idx="'+i+'">✕</button></div>';
+      });
+      html += '</div>';
+    } else if(key==="priorities"){
+      html += '<h1 class="auth-title" style="font-size:19px;">'+t("ob_priorities_title")+'</h1>';
+      html += '<div class="add-row"><input class="mini-input" id="obPriorityInput" placeholder="'+t("ob_priority_ph")+'"><button class="add-go" id="obPriorityAddBtn">+</button></div>';
+      html += '<div id="obPrioritiesList">'+obTagListHtml(onboardData.priorities, "priority")+'</div>';
+    } else if(key==="pledge"){
+      html += '<h1 class="auth-title" style="font-size:20px;">'+t("ob_pledge_title")+'</h1>';
+      var pName = onboardData.nickname||onboardData.name||"";
+      html += '<div class="info-modal-body" style="max-height:36vh;">';
+      html += '<p>'+t("pledge_body_p1").replace("{name}", escapeHtml(pName))+'</p>';
+      html += '<p>• '+t("pledge_item1")+'</p><p>• '+t("pledge_item2")+'</p><p>• '+t("pledge_item3")+'</p><p>• '+t("pledge_item4")+'</p>';
+      html += '</div>';
+      html += '<label class="check-row" style="justify-content:center;"><input type="checkbox" id="obPledgeCheck" '+(onboardData.pledgeAccepted?"checked":"")+'> '+t("ob_pledge_check")+'</label>';
+    } else if(key==="summary"){
+      html += '<h1 class="auth-title">'+t("onboard_summary_title").replace("{name}", onboardData.nickname||onboardData.name)+'</h1>';
+      html += '<p class="auth-sub">'+t("onboard_summary_sub")+'</p>';
+    }
+
+    html += '<p class="auth-error" id="obError"></p>';
+    html += '<div class="onboard-nav">';
+    if(onboardStep>0) html += '<button class="btn ghost" id="obBack">'+t("onboard_back")+'</button>';
+    html += '<button class="btn" id="obNext">'+(key==="summary"?t("onboard_finish"):t("onboard_next"))+'</button>';
+    html += '</div>';
+    html += '</div>';
+
+    box.innerHTML = html;
+
+    if(key==="about"){
+      document.getElementById("obName").addEventListener("keydown", function(e){ if(e.key==="Enter") obGoNext(); });
+      document.getElementById("obFocusRow").querySelectorAll("[data-focus]").forEach(function(c){
+        c.addEventListener("click", function(){
+          var fk = c.getAttribute("data-focus"); var label = t("focus_"+fk);
+          var idx = onboardData.focusAreas.indexOf(label);
+          if(idx>-1) onboardData.focusAreas.splice(idx,1); else onboardData.focusAreas.push(label);
+          renderOnboardStep();
+        });
+      });
+      document.getElementById("obFocusRow").querySelectorAll("[data-custom-focus]").forEach(function(c){
+        c.addEventListener("click", function(){
+          var v = c.getAttribute("data-custom-focus");
+          var idx = onboardData.focusAreas.indexOf(v);
+          if(idx>-1) onboardData.focusAreas.splice(idx,1);
+          renderOnboardStep();
+        });
+      });
+      document.getElementById("obFocusAddBtn").addEventListener("click", function(){
+        var inp = document.getElementById("obFocusOther"); var v = inp.value.trim();
+        if(v){ onboardData.focusAreas.push(v); renderOnboardStep(); }
+      });
+      document.getElementById("obFocusOther").addEventListener("keydown", function(e){
+        if(e.key==="Enter"){ e.preventDefault(); document.getElementById("obFocusAddBtn").click(); }
+      });
+    }
+    if(key==="growth"){
+      var goalAdd = function(){
+        var inp = document.getElementById("obGoalInput"); var v = inp.value.trim();
+        if(v){ onboardData.goals.push(v); renderOnboardStep(); }
+      };
+      document.getElementById("obGoalAddBtn").addEventListener("click", goalAdd);
+      document.getElementById("obGoalInput").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); goalAdd(); } });
+      box.querySelectorAll("[data-goal-idx]").forEach(function(b){
+        b.addEventListener("click", function(){ onboardData.goals.splice(parseInt(b.getAttribute("data-goal-idx"),10),1); renderOnboardStep(); });
+      });
+      document.getElementById("obSkillAddBtn").addEventListener("click", function(){
+        var name = document.getElementById("obSkillName").value.trim();
+        if(!name) return;
+        var current = parseInt(document.getElementById("obSkillCurrent").value,10) || 0;
+        var target = parseInt(document.getElementById("obSkillTarget").value,10) || 10;
+        var hours = parseInt(document.getElementById("obSkillHours").value,10) || 0;
+        onboardData.skills.push({name:name, current:current, target:target, hours:hours});
+        renderOnboardStep();
+      });
+      box.querySelectorAll("[data-skill-idx]").forEach(function(b){
+        b.addEventListener("click", function(){ onboardData.skills.splice(parseInt(b.getAttribute("data-skill-idx"),10),1); renderOnboardStep(); });
+      });
+    }
+    if(key==="habits"){
+      var habitType = "build";
+      document.getElementById("obHabitType").querySelectorAll("button").forEach(function(b){
+        b.addEventListener("click", function(){
+          habitType = b.getAttribute("data-type");
+          document.getElementById("obHabitType").querySelectorAll("button").forEach(function(x){x.classList.remove("active");});
+          b.classList.add("active");
+        });
+      });
+      var habitAdd = function(){
+        var inp = document.getElementById("obHabitInput"); var v = inp.value.trim();
+        if(v){ onboardData.habits.push({text:v, type:habitType}); renderOnboardStep(); }
+      };
+      document.getElementById("obHabitAddBtn").addEventListener("click", habitAdd);
+      document.getElementById("obHabitInput").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); habitAdd(); } });
+      box.querySelectorAll("[data-habit-idx]").forEach(function(b){
+        b.addEventListener("click", function(){ onboardData.habits.splice(parseInt(b.getAttribute("data-habit-idx"),10),1); renderOnboardStep(); });
+      });
+    }
+    if(key==="schedule"){
+      document.getElementById("obBlockAddBtn").addEventListener("click", function(){
+        var label = document.getElementById("obBlockLabel").value.trim();
+        var time = document.getElementById("obBlockTime").value;
+        if(!label) return;
+        onboardData.schedule.push({label:label, time:time});
+        onboardData.wakeTime = document.getElementById("obWake").value;
+        onboardData.sleepTime = document.getElementById("obSleep").value;
+        renderOnboardStep();
+      });
+      box.querySelectorAll("[data-block-idx]").forEach(function(b){
+        b.addEventListener("click", function(){
+          onboardData.wakeTime = document.getElementById("obWake").value;
+          onboardData.sleepTime = document.getElementById("obSleep").value;
+          onboardData.schedule.splice(parseInt(b.getAttribute("data-block-idx"),10),1); renderOnboardStep();
+        });
+      });
+    }
+    if(key==="priorities"){
+      var prioAdd = function(){
+        var inp = document.getElementById("obPriorityInput"); var v = inp.value.trim();
+        if(!v) return;
+        if(onboardData.priorities.length>=3){ document.getElementById("obError").textContent = t("onboard_need_priority_max"); return; }
+        onboardData.priorities.push(v); renderOnboardStep();
+      };
+      document.getElementById("obPriorityAddBtn").addEventListener("click", prioAdd);
+      document.getElementById("obPriorityInput").addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); prioAdd(); } });
+      box.querySelectorAll("[data-priority-idx]").forEach(function(b){
+        b.addEventListener("click", function(){ onboardData.priorities.splice(parseInt(b.getAttribute("data-priority-idx"),10),1); renderOnboardStep(); });
+      });
+    }
+    if(key==="pledge"){
+      document.getElementById("obPledgeCheck").addEventListener("change", function(e){
+        onboardData.pledgeAccepted = e.target.checked;
+      });
+    }
+    var backBtn = document.getElementById("obBack");
+    if(backBtn) backBtn.addEventListener("click", function(){
+      if(key==="schedule"){ onboardData.wakeTime = document.getElementById("obWake").value; onboardData.sleepTime = document.getElementById("obSleep").value; }
+      onboardStep--; renderOnboardStep();
+    });
+    document.getElementById("obNext").addEventListener("click", obGoNext);
+  }
+  function obGoNext(){
+    var key = onboardSteps[onboardStep];
+    var err = document.getElementById("obError");
+    if(key==="about"){
+      var v = document.getElementById("obName").value.trim();
+      if(!v){ err.textContent = t("onboard_need_name"); return; }
+      onboardData.name = v;
+      onboardData.nickname = document.getElementById("obNickname").value.trim();
+    } else if(key==="schedule"){
+      onboardData.wakeTime = document.getElementById("obWake").value;
+      onboardData.sleepTime = document.getElementById("obSleep").value;
+    } else if(key==="pledge"){
+      if(!onboardData.pledgeAccepted){ err.textContent = t("ob_pledge_need"); return; }
+    } else if(key==="summary"){
+      finishOnboarding();
+      return;
+    }
+    onboardStep++;
+    renderOnboardStep();
+  }
+  function finishOnboarding(){
+    state.name = onboardData.name;
+    state.nickname = onboardData.nickname;
+    state.focusAreas = onboardData.focusAreas.slice();
+    state.goals = onboardData.goals.map(function(g){ return {id:uid(), text:g, sessions:0}; });
+    state.skills = onboardData.skills.map(function(s){ return {id:uid(), name:s.name, current:s.current, target:s.target, hours:s.hours, sessions:0}; });
+    state.habits = onboardData.habits.map(function(h){ return {id:uid(), text:h.text, type:h.type}; });
+    state.wakeTime = onboardData.wakeTime;
+    state.sleepTime = onboardData.sleepTime;
+    state.schedule = onboardData.schedule.map(function(s){ return {id:uid(), label:s.label, time:s.time}; });
+    state.priorities = onboardData.priorities.slice();
+    state.pledge = onboardData.pledgeAccepted ? { accepted:true, date: new Date().toLocaleDateString(lang==="ar"?"ar-SA":"en-US") } : null;
+    state.onboarded = true;
+    saveState();
+    enterApp();
+    setTimeout(showQuickTour, 500);
+  }
+  function showQuickTour(){
+    var html = "<p><strong>"+t("nav_today")+"</strong> — "+t("tour_today")+"</p>"+
+      "<p><strong>"+t("nav_tasks")+"</strong> — "+t("tour_tasks")+"</p>"+
+      "<p><strong>"+t("nav_review")+"</strong> — "+t("tour_review")+"</p>"+
+      "<p><strong>"+t("nav_goals")+"</strong> — "+t("tour_goals")+"</p>"+
+      "<p><strong>"+t("nav_coach")+"</strong> — "+t("tour_coach")+"</p>";
+    infoModalCloseBtn.textContent = t("modal_close");
+    openInfoModal("🧭", t("tour_title"), html);
+  }
+
+  /* ================= enter app ================= */
+  var greetedCoach = false;
+  function enterApp(){
+    applyTheme();
+    showOverlay("app");
+    renderAll();
+    if(!greetedCoach){
+      greetedCoach = true;
+      var greet = lang==="ar"
+        ? "هلا "+(state.nickname||state.name)+" 👋 زين نعرف بعض. اسألني عن أي شي أو خلّني أساعدك ترتب يومك — أنا كلي أذنين."
+        : "Hey "+(state.nickname||state.name)+" 👋 good to meet you. Ask me anything, or let me help you organize your day — I'm all ears.";
+      addBubble("coach", greet);
+    }
+  }
+
+  /* ================= init app (no login) ================= */
+  /* ================= auth screen (local, per-device accounts) ================= */
+  var authMode = "signup"; // "signup" | "login"
+  var authEls2 = {
+    title: document.getElementById("authTitle"),
+    sub: document.getElementById("authSub"),
+    idInput: document.getElementById("authIdentifier"),
+    passInput: document.getElementById("authPassword"),
+    privacyField: document.getElementById("privacyField"),
+    privacyCheck: document.getElementById("authPrivacyCheck"),
+    error: document.getElementById("authError"),
+    submit: document.getElementById("authSubmit"),
+    hint: document.getElementById("authHint")
+  };
+  function renderAuthScreen2(){
+    authEls2.error.textContent = "";
+    authEls2.idInput.placeholder = t("auth2_identifier_ph");
+    authEls2.passInput.placeholder = t("auth2_password_ph");
+    authEls2.passInput.value = "";
+    document.getElementById("forgotLink").textContent = t("auth2_forgot");
+    document.getElementById("authPrivacyLabel").textContent = t("auth2_privacy_pre");
+    document.getElementById("authPrivacyLink").textContent = t("auth2_privacy_link");
+    authEls2.hint.textContent = t("auth2_hint");
+    if(authMode==="signup"){
+      authEls2.title.textContent = t("auth2_signup_title");
+      authEls2.sub.textContent = t("auth2_signup_sub");
+      authEls2.submit.textContent = t("auth2_signup_btn");
+      authEls2.privacyField.classList.remove("hidden");
+      authEls2.privacyCheck.checked = false;
+      document.getElementById("modeToggleLink").textContent = t("auth2_switch_to_login");
+    } else {
+      authEls2.title.textContent = t("auth2_login_title");
+      authEls2.sub.textContent = t("auth2_login_sub");
+      authEls2.submit.textContent = t("auth2_login_btn");
+      authEls2.privacyField.classList.add("hidden");
+      document.getElementById("modeToggleLink").textContent = t("auth2_switch_to_signup");
+    }
+  }
+  document.getElementById("modeToggleLink").addEventListener("click", function(){
+    authMode = authMode==="signup" ? "login" : "signup";
+    renderAuthScreen2();
+  });
+  document.getElementById("authPrivacyLink").addEventListener("click", function(e){
+    e.preventDefault();
+    infoModalCloseBtn.textContent = t("modal_close");
+    openInfoModal("🔒", t("privacy_title"), privacyBodyHtml());
+  });
+  document.getElementById("forgotLink").addEventListener("click", function(){
+    var id = authEls2.idInput.value.trim();
+    if(!id || !getAccount(id)){ authEls2.error.textContent = t("auth2_no_account"); return; }
+    if(confirm(t("auth2_reset_confirm"))){
+      try{ localStorage.removeItem("rafiq_state_v3_"+encodeURIComponent(normId(id))); }catch(e){}
+      deleteAccount(id);
+      clearSession();
+      authMode = "signup";
+      renderAuthScreen2();
+    }
+  });
+  async function handleAuthSubmit2(){
+    authEls2.error.textContent = "";
+    var id = authEls2.idInput.value.trim();
+    var pass = authEls2.passInput.value;
+    if(!id || !pass){ authEls2.error.textContent = t("auth2_fill_all"); return; }
+    if(id.length<4){ authEls2.error.textContent = t("auth2_identifier_short"); return; }
+    if(authMode==="signup"){
+      if(pass.length<4){ authEls2.error.textContent = t("auth2_password_short"); return; }
+      if(!authEls2.privacyCheck.checked){ authEls2.error.textContent = t("auth2_privacy_need"); return; }
+      if(getAccount(id)){ authEls2.error.textContent = t("auth2_exists"); return; }
+      authEls2.submit.disabled = true;
+      var salt = randomSaltHex();
+      var hash = await sha256Hex(pass+salt);
+      setAccount(id, { hash:hash, salt:salt, createdAt:Date.now() });
+      setSession(id);
+      authEls2.submit.disabled = false;
+      await afterAuthSuccess(id);
+    } else {
+      var acc = getAccount(id);
+      if(!acc){ authEls2.error.textContent = t("auth2_no_account"); return; }
+      var attempts = getAttempts(id);
+      if(attempts.lockUntil && Date.now()<attempts.lockUntil){
+        authEls2.error.textContent = t("auth2_locked")+" ("+Math.ceil((attempts.lockUntil-Date.now())/1000)+"s)";
+        return;
+      }
+      authEls2.submit.disabled = true;
+      var hash2 = await sha256Hex(pass+acc.salt);
+      authEls2.submit.disabled = false;
+      if(hash2===acc.hash){
+        setAttempts(id, {count:0, lockUntil:0});
+        setSession(id);
+        await afterAuthSuccess(id);
+      } else {
+        var a = getAttempts(id);
+        a.count = (a.count||0)+1;
+        if(a.count>=5){ a.lockUntil = Date.now()+60000; a.count=0; authEls2.error.textContent = t("auth2_locked"); }
+        else { authEls2.error.textContent = t("auth2_wrong"); }
+        setAttempts(id, a);
+      }
+    }
+  }
+  authEls2.submit.addEventListener("click", handleAuthSubmit2);
+  authEls2.idInput.addEventListener("keydown", function(e){ if(e.key==="Enter") handleAuthSubmit2(); });
+  authEls2.passInput.addEventListener("keydown", function(e){ if(e.key==="Enter") handleAuthSubmit2(); });
+
+  async function afterAuthSuccess(identifier){
+    setAccountStoreKey(identifier);
+    state = await loadState();
+    if(!state.onboarded){
+      onboardStep = 0;
+      onboardData = {
+        name: state.name||"", nickname: state.nickname||"",
+        focusAreas: [], goals: [], skills: [], habits: [],
+        wakeTime:"", sleepTime:"", schedule: [], priorities: [], pledgeAccepted:false
+      };
+      renderOnboardStep();
+      showOverlay("onboard");
+    } else {
+      enterApp();
+    }
+  }
+
+  async function initAuth(){
+    applyTheme();
+    var session = getSession();
+    if(session && getAccount(session)){
+      await afterAuthSuccess(session);
+    } else {
+      var accounts = getAccounts();
+      authMode = Object.keys(accounts).length>0 ? "login" : "signup";
+      renderAuthScreen2();
+      showOverlay("auth");
+    }
+  }
+
+  /* ================= helpers ================= */
+  var tierMeta = {
+    urgent:{color:"var(--urgent)", soft:"var(--urgent-soft)"},
+    important:{color:"var(--important)", soft:"var(--important-soft)"},
+    extra:{color:"var(--extra)", soft:"var(--extra-soft)"}
+  };
+  function heuristicClassify(lines){
+    var urgentWordsAr=["اختبار","تسليم","موعد","واجب","اليوم"], urgentWordsEn=["exam","deadline","due","today","submit"];
+    var extraWordsAr=["ترفيه","لعب","أفلام"], extraWordsEn=["fun","play","movie","relax"];
+    var uw = lang==="ar"?urgentWordsAr:urgentWordsEn, ew = lang==="ar"?extraWordsAr:extraWordsEn;
+    return lines.map(function(l){
+      var tier="important";
+      if(uw.some(function(w){return l.indexOf(w)>-1;})) tier="urgent";
+      else if(ew.some(function(w){return l.indexOf(w)>-1;})) tier="extra";
+      return {text:l, tier:tier, reason:""};
+    });
+  }
+
+  /* ================= static text apply ================= */
+  function applyStaticText(){
+    document.querySelectorAll("[data-t]").forEach(function(el){ el.textContent = t(el.getAttribute("data-t")); });
+    document.querySelectorAll("[data-t-ph]").forEach(function(el){ el.placeholder = t(el.getAttribute("data-t-ph")); });
+    document.getElementById("brainDump").placeholder = t("tasks_placeholder");
+    document.getElementById("reflectAnswer").placeholder = t("review_answer_placeholder");
+    document.getElementById("chatInput").placeholder = t("coach_placeholder");
+    document.getElementById("newSchedLabel").placeholder = t("sched_label_ph");
+    document.getElementById("topName").textContent = t("appName");
+    document.getElementById("avatarBtn").textContent = ((state.nickname||state.name||"R")).charAt(0).toUpperCase();
+    document.getElementById("langToggle").textContent = t("lang_switch_to");
+    document.getElementById("noteCard").textContent = t("today_note");
+    updateAiStatusNote();
+  }
+
+  /* ================= render: today ================= */
+  function timeToMinutes(tm){
+    if(!tm) return null;
+    var parts = tm.split(":"); if(parts.length<2) return null;
+    return (parseInt(parts[0],10)||0)*60 + (parseInt(parts[1],10)||0);
+  }
+  function renderToday(){
+    var d = new Date();
+    var daysAr=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+    var daysEn=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var dayName = (lang==="ar"?daysAr:daysEn)[d.getDay()];
+    document.getElementById("dateSub").textContent = dayName;
+    var hour=d.getHours();
+    var greet = hour<12? t("greeting_morning"):t("greeting_evening");
+    document.getElementById("greetingText").textContent = greet + " " + (state.nickname||state.name||"") + " 👋";
+
+    var habitsTotal = state.habits.length;
+    var habitsDoneCount = state.habits.filter(function(h){ return isHabitDoneOn(h.id, todayKey()); }).length;
+    var tasksTotal = state.tasks.length;
+    var tasksDoneCount = state.tasks.filter(function(x){ return x.done; }).length;
+    var ringPct, ringLabelText;
+    if(habitsTotal>0){
+      ringPct = Math.round((habitsDoneCount/habitsTotal)*100);
+      ringLabelText = lang==="ar" ? "قطعت "+habitsDoneCount+" من "+habitsTotal+" عادات اليوم" : habitsDoneCount+" of "+habitsTotal+" habits kept today";
+    } else if(tasksTotal>0){
+      ringPct = Math.round((tasksDoneCount/tasksTotal)*100);
+      ringLabelText = lang==="ar" ? "أنجزت "+tasksDoneCount+" من "+tasksTotal+" مهام" : tasksDoneCount+" of "+tasksTotal+" tasks done";
+    } else {
+      ringPct = 0;
+      ringLabelText = lang==="ar" ? "ابدأ يومك — ضيف عادة أو مهمة" : "Start your day — add a habit or task";
+    }
+    var circumference = 439.8;
+    document.getElementById("ringFill").style.strokeDashoffset = String(circumference - (circumference*ringPct/100));
+    document.getElementById("ringPct").textContent = ringPct+"%";
+    document.getElementById("ringLabel").textContent = ringLabelText;
+
+    var nowMin = hour*60 + d.getMinutes();
+    var upcoming = state.schedule
+      .map(function(s){ return {label:s.label, time:s.time, mins:timeToMinutes(s.time)}; })
+      .filter(function(s){ return s.mins!==null && s.mins>=nowMin; })
+      .sort(function(a,b){ return a.mins-b.mins; });
+    var nextLabel = upcoming.length ? (upcoming[0].label+" · "+upcoming[0].time) : t("stat_none");
+
+    var habitsToday = state.habits.length;
+    var stats = [
+      {ic:"🎯", val: state.priorities.length, lbl: t("stat_priorities")},
+      {ic:"🌱", val: state.goals.length, lbl: t("stat_goals")},
+      {ic:"✅", val: habitsToday, lbl: t("stat_habits")},
+      {ic:"⏰", val: nextLabel, lbl: t("stat_next")}
+    ];
+    var sr = document.getElementById("statRow"); sr.innerHTML="";
+    stats.forEach(function(s){
+      var el=document.createElement("div"); el.className="stat-card";
+      el.innerHTML='<div class="ic">'+s.ic+'</div><div class="val" style="font-size:'+(String(s.val).length>7?"14px":"20px")+';">'+escapeHtml(String(s.val))+'</div><div class="lbl">'+s.lbl+'</div>';
+      sr.appendChild(el);
+    });
+
+    var chipsWrap = document.getElementById("lifePrioritiesChips"); chipsWrap.innerHTML="";
+    state.priorities.forEach(function(p){
+      var chip = document.createElement("span"); chip.className="chip-static"; chip.textContent = p;
+      chipsWrap.appendChild(chip);
+    });
+
+    var sched = document.getElementById("scheduleList"); sched.innerHTML="";
+    var sortedSched = state.schedule.slice().sort(function(a,b){
+      var am=timeToMinutes(a.time), bm=timeToMinutes(b.time);
+      if(am===null) return 1; if(bm===null) return -1; return am-bm;
+    });
+    if(sortedSched.length===0){
+      sched.innerHTML = '<p class="page-sub">'+t("today_no_schedule")+'</p>';
+    }
+    sortedSched.forEach(function(s){
+      var row=document.createElement("div"); row.className="tl-row";
+      row.innerHTML = '<span class="tl-dot"></span><span class="tl-label">📌 '+escapeHtml(s.label)+'</span><span class="tl-time">'+escapeHtml(s.time||"")+'</span><button class="sched-del" data-sched-id="'+s.id+'">✕</button>';
+      sched.appendChild(row);
+    });
+    sched.querySelectorAll("[data-sched-id]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id = b.getAttribute("data-sched-id");
+        state.schedule = state.schedule.filter(function(x){ return String(x.id)!==id; });
+        saveState(); renderToday();
+      });
+    });
+
+    var top = state.tasks.filter(function(x){return !x.done;});
+    top.sort(function(a,b){ var order={urgent:0,important:1,extra:2}; return order[a.tier]-order[b.tier]; });
+    top = top.slice(0,3);
+    var wrap = document.getElementById("todayPriorities"); wrap.innerHTML="";
+    if(top.length===0){ wrap.innerHTML = '<p class="page-sub">'+t("today_no_tasks")+'</p>'; }
+    top.forEach(function(x){
+      var m=tierMeta[x.tier];
+      var el=document.createElement("div"); el.className="priority-card";
+      el.style.setProperty("--tier-color", m.color); el.style.setProperty("--tier-soft", m.soft);
+      el.innerHTML = '<span class="badge">'+t("tier_"+x.tier)+'</span><span class="txt">'+escapeHtml(x.text)+'</span>';
+      wrap.appendChild(el);
+    });
+
+    var neglectedSkill = state.skills.filter(function(sk){ return skillNeglected(sk.id); })[0];
+    var nudge = document.getElementById("neglectNudge");
+    if(neglectedSkill){
+      nudge.innerHTML = t("neglect_nudge").replace("{name}", escapeHtml(neglectedSkill.name))+
+        ' <button class="lr-log" id="neglectNudgeBtn" style="margin-top:8px;">'+t("neglect_nudge_btn")+'</button>';
+      nudge.classList.remove("hidden");
+      var nb = document.getElementById("neglectNudgeBtn");
+      if(nb) nb.addEventListener("click", function(){
+        document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
+        document.querySelector('.tab-btn[data-target="coach"]').classList.add("active");
+        document.querySelectorAll(".screen").forEach(function(s){ s.classList.toggle("active", s.getAttribute("data-screen")==="coach"); });
+        var msg = lang==="ar" ? "أشعر إن مهارة \""+neglectedSkill.name+"\" متوقفة، ساعدني أعدل خطتي لها" : "I feel like my \""+neglectedSkill.name+"\" skill has stalled — help me adjust my plan for it";
+        document.getElementById("chatInput").value = msg;
+      });
+    } else {
+      nudge.classList.add("hidden");
+    }
+  }
+  document.getElementById("addSchedBtn").addEventListener("click", function(){
+    var labelInp = document.getElementById("newSchedLabel");
+    var timeInp = document.getElementById("newSchedTime");
+    var label = labelInp.value.trim();
+    if(!label) return;
+    state.schedule.push({id:uid(), label:label, time:timeInp.value});
+    saveState();
+    labelInp.value=""; timeInp.value="";
+    renderToday();
+  });
+  document.getElementById("newSchedLabel").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addSchedBtn").click(); });
+
+  /* ================= render: tasks ================= */
+  function renderTasksOutput(){
+    var out = document.getElementById("tasksOutput"); out.innerHTML="";
+    ["urgent","important","extra"].forEach(function(tier){
+      var items = state.tasks.filter(function(x){return x.tier===tier;});
+      if(items.length===0) return;
+      var m = tierMeta[tier];
+      var group = document.createElement("div"); group.className="tier-group";
+      var h = document.createElement("div"); h.className="tier-heading"; h.textContent=t("tier_"+tier);
+      group.appendChild(h);
+      items.forEach(function(x){
+        var row=document.createElement("label"); row.className="task-row"+(x.done?" done":"");
+        row.style.setProperty("--tier-color", m.color); row.style.setProperty("--tier-soft", m.soft);
+        row.innerHTML = '<input type="checkbox" '+(x.done?"checked":"")+' data-id="'+x.id+'">'+
+          '<span><span class="task-text">'+x.text+'</span>'+(x.reason?'<div class="task-reason">'+x.reason+'</div>':'')+'</span>';
+        group.appendChild(row);
+      });
+      out.appendChild(group);
+    });
+    out.querySelectorAll('input[type=checkbox]').forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var id = cb.getAttribute("data-id");
+        state.tasks.forEach(function(x){ if(String(x.id)===id) x.done = cb.checked; });
+        saveState(); renderTasksOutput(); renderToday();
+      });
+    });
+  }
+
+  document.getElementById("sortBtn").addEventListener("click", async function(){
+    var btn = this;
+    var raw = document.getElementById("brainDump").value.trim();
+    if(!raw) return;
+    var lines = raw.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+    btn.disabled = true; btn.textContent = t("tasks_sorting");
+    var promptAr = 'صنّف كل سطر من مهام طالب جامعي إلى "urgent" أو "important" أو "extra". رجّع JSON فقط: [{"text":"...","tier":"urgent|important|extra","reason":"سبب قصير بالعامية"}]\nالمهام:\n'+lines.map(function(l){return "- "+l;}).join("\n");
+    var promptEn = 'Classify each line of a university student\'s tasks into "urgent", "important", or "extra". Return JSON only: [{"text":"...","tier":"urgent|important|extra","reason":"short reason"}]\nTasks:\n'+lines.map(function(l){return "- "+l;}).join("\n");
+    var classified = await askAIJson(lang==="ar"?promptAr:promptEn);
+    if(!Array.isArray(classified)) classified = heuristicClassify(lines);
+    classified.forEach(function(c){
+      state.tasks.push({id: Date.now()+Math.random(), text:c.text, tier:(tierMeta[c.tier]?c.tier:"important"), reason:c.reason||"", done:false});
+    });
+    saveState();
+    document.getElementById("brainDump").value="";
+    renderTasksOutput(); renderToday();
+    btn.disabled=false; btn.textContent=t("tasks_sort_btn");
+  });
+
+  /* ================= render: review ================= */
+  function renderReviewChecklist(){
+    var wrap = document.getElementById("reviewChecklist"); wrap.innerHTML="";
+    if(state.habits.length===0){
+      wrap.innerHTML = '<p class="empty-hint">'+t("review_checklist_empty")+'</p>';
+      return;
+    }
+    state.habits.forEach(function(h){
+      var row=document.createElement("label"); row.className="check-row";
+      var checked = isHabitDoneOn(h.id, todayKey()) ? "checked":"";
+      row.innerHTML = '<input type="checkbox" data-habit="'+h.id+'" '+checked+'> <span class="habit-tag '+h.type+'" style="margin-inline-end:4px;">'+t("habit_"+h.type)+'</span> '+escapeHtml(h.text)+' '+skillTagHtml(h.skillId);
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll("input").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var habitId = cb.getAttribute("data-habit");
+        var wasDone = isHabitDoneOn(habitId, todayKey());
+        setHabitDoneOn(habitId, todayKey(), cb.checked);
+        if(cb.checked && !wasDone){
+          var h = state.habits.filter(function(x){return x.id===habitId;})[0];
+          if(h && h.skillId) bumpSkillFromHabit(h.skillId, 1);
+        } else if(!cb.checked && wasDone){
+          var h2 = state.habits.filter(function(x){return x.id===habitId;})[0];
+          if(h2 && h2.skillId) bumpSkillFromHabit(h2.skillId, -1);
+        }
+        saveState(); renderToday(); renderGoals();
+      });
+    });
+  }
+  var selectedMood = null;
+  document.getElementById("moodRow").addEventListener("click", function(e){
+    var btn = e.target.closest(".mood-btn"); if(!btn) return;
+    document.querySelectorAll(".mood-btn").forEach(function(b){b.classList.remove("active");});
+    btn.classList.add("active"); selectedMood = btn.textContent;
+    state.lastMood = selectedMood; saveState(); renderToday();
+  });
+  document.getElementById("reflectBtn").addEventListener("click", async function(){
+    var btn=this; btn.disabled=true; btn.textContent=t("review_reflect_loading");
+    var done = state.habits.filter(function(h){return isHabitDoneOn(h.id, todayKey());}).map(function(h){return h.text;});
+    var notDone = state.habits.filter(function(h){return !isHabitDoneOn(h.id, todayKey());}).map(function(h){return h.text;});
+    // deterministic chain context: which skills/goals today's habits actually serve
+    var chainLines = [];
+    state.habits.filter(function(h){return isHabitDoneOn(h.id, todayKey()) && h.skillId;}).forEach(function(h){
+      var sk = state.skills.filter(function(s){return s.id===h.skillId;})[0];
+      if(!sk) return;
+      var goalsForSkill = state.goals.filter(function(g){return g.skillId===sk.id;}).map(function(g){return g.text;});
+      chainLines.push(h.text+" → "+sk.name+(goalsForSkill.length? " → "+goalsForSkill.join("، ") : ""));
+    });
+    var chainText = chainLines.length ? ("\n"+(lang==="ar"?"سلسلة اليوم (عادة → مهارة → هدف): ":"Today's chain (habit → skill → goal): ")+chainLines.join(" | ")) : "";
+    var promptAr = persona()+"\nحلل يوم "+(state.nickname||state.name||"صاحبك")+" بجملتين إلى ثلاث، بنبرة صريحة وداعمة كخوي مب كمدرب رسمي. لو فيه سلسلة عادة→مهارة→هدف اليوم، اربط كلامك فيها ووضح وش الهدف الحقيقي اللي قرّب منه:\nالمزاج: "+(selectedMood||"—")+"\nأنجز من عاداته: "+(done.join("، ")||"لا شيء")+"\nلم يُنجز: "+(notDone.join("، ")||"لا شيء")+chainText+"\nبدون سؤال، فقط ملاحظة.";
+    var promptEn = persona()+"\nAnalyze "+(state.nickname||state.name||"their")+"'s day in 2-3 honest, supportive sentences, like a close friend not a formal coach. If there's a habit→skill→goal chain today, tie your note to it and name the real goal it moved them toward:\nMood: "+(selectedMood||"—")+"\nHabits kept: "+(done.join(", ")||"none")+"\nHabits missed: "+(notDone.join(", ")||"none")+chainText+"\nEnd with a note, no question.";
+    var text = await askAI(lang==="ar"?promptAr:promptEn);
+    if(!text){
+      text = lang==="ar"
+        ? "ما قدرت أتواصل بالذكاء الاصطناعي الحين، جرب مرة ثانية بعد شوي."
+        : "Couldn't reach the AI right now — try again in a moment.";
+    }
+    document.getElementById("reflectionBox").style.display="block";
+    document.getElementById("reflectionText").textContent = text;
+    document.getElementById("reflectQuestionWrap").style.display="block";
+    btn.disabled=false; btn.textContent=t("review_reflect_btn");
+  });
+
+  /* ================= render: goals / skills / habits ================= */
+  function populateSkillSelect(sel, selectedId){
+    if(!sel) return;
+    var html = '<option value="">'+t("skill_link_none")+'</option>';
+    state.skills.forEach(function(sk){
+      html += '<option value="'+sk.id+'"'+(selectedId===sk.id?' selected':'')+'>'+escapeHtml(sk.name)+'</option>';
+    });
+    sel.innerHTML = html;
+  }
+  function linkedHabitsFor(skillId){ return state.habits.filter(function(h){ return h.skillId===skillId; }); }
+  function linkedTasksFor(skillId){ return state.agenda.filter(function(i){ return i.kind==="task" && i.skillId===skillId; }); }
+  function skillNeglected(skillId){
+    var linked = linkedHabitsFor(skillId);
+    if(linked.length===0) return false;
+    for(var d=0; d<3; d++){
+      for(var i=0;i<linked.length;i++){ if(isHabitDoneOn(linked[i].id, dateKeyOffset(d))) return false; }
+    }
+    return true;
+  }
+  function skillTagHtml(skillId){
+    if(!skillId) return "";
+    var sk = state.skills.filter(function(s){return s.id===skillId;})[0];
+    if(!sk) return "";
+    return '<span class="skill-tag">'+t("linked_skill_prefix")+' '+escapeHtml(sk.name)+'</span>';
+  }
+  function bumpSkillFromHabit(skillId, delta){
+    var sk = state.skills.filter(function(s){return s.id===skillId;})[0];
+    if(!sk) return;
+    sk.current = Math.max(0, Math.min(sk.target, sk.current+delta));
+    sk.sessions = Math.max(0, (sk.sessions||0)+delta);
+  }
+  function bumpSkillFromTask(skillId, delta){
+    var sk = state.skills.filter(function(s){return s.id===skillId;})[0];
+    if(!sk) return;
+    sk.sessions = Math.max(0, (sk.sessions||0)+delta);
+  }
+
+  function miniRingSvg(pct, size, strokeW){
+    size = size||44; strokeW = strokeW||5;
+    var r = (size/2) - strokeW;
+    var c = 2*Math.PI*r;
+    var offset = c - (c*Math.max(0,Math.min(100,pct))/100);
+    return '<svg viewBox="0 0 '+size+' '+size+'" class="mini-ring-svg" style="width:'+size+'px;height:'+size+'px;">'+
+      '<circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+r+'" class="mini-ring-track" stroke-width="'+strokeW+'"></circle>'+
+      '<circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+r+'" class="mini-ring-fill" stroke-width="'+strokeW+'" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+offset.toFixed(1)+'"></circle>'+
+      '</svg>';
+  }
+  function sessionDotsHtml(sessions){
+    var track = Math.max(5, Math.min(sessions,7));
+    var html = '<div class="session-dots">';
+    for(var i=0;i<track;i++){ html += '<span class="s-dot'+(i<sessions?' filled':'')+'"></span>'; }
+    html += '</div>';
+    if(sessions>7) html += '<span class="s-extra">+'+(sessions-7)+'</span>';
+    return html;
+  }
+  function weekDotsHtml(habitId){
+    var html = '<div class="week-dots">';
+    for(var i=6;i>=0;i--){
+      var done = isHabitDoneOn(habitId, dateKeyOffset(i));
+      var isToday = i===0;
+      html += '<span class="w-dot'+(done?' filled':'')+(isToday?' today':'')+'"></span>';
+    }
+    html += '</div>';
+    return html;
+  }
+  function renderGoals(){
+    document.getElementById("goalsCount").textContent = state.goals.length;
+    document.getElementById("skillsCount").textContent = state.skills.length;
+    document.getElementById("habitsCount").textContent = state.habits.length;
+    populateSkillSelect(document.getElementById("newGoalSkill"));
+    populateSkillSelect(document.getElementById("newHabitSkill"));
+
+    var gWrap = document.getElementById("goalsListWrap"); gWrap.innerHTML="";
+    if(state.goals.length===0){ gWrap.innerHTML = '<p class="empty-hint">'+t("no_goals_yet")+'</p>'; }
+    state.goals.forEach(function(g){
+      var row=document.createElement("div"); row.className="goal-row-v2";
+      row.innerHTML = '<div class="gr-top"><span class="lr-text">'+escapeHtml(g.text)+' '+skillTagHtml(g.skillId)+'</span><button class="lr-del" data-del-goal="'+g.id+'">✕</button></div>'+
+        '<div class="gr-bottom">'+sessionDotsHtml(g.sessions)+'<button class="lr-log" data-log-goal="'+g.id+'">'+t("log_session")+'</button></div>';
+      gWrap.appendChild(row);
+    });
+    gWrap.querySelectorAll("[data-log-goal]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id=b.getAttribute("data-log-goal");
+        var g = state.goals.filter(function(x){return x.id===id;})[0];
+        if(g){ g.sessions++; if(g.skillId) bumpSkillFromTask(g.skillId, 1); }
+        saveState(); renderGoals();
+      });
+    });
+    gWrap.querySelectorAll("[data-del-goal]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id=b.getAttribute("data-del-goal");
+        state.goals = state.goals.filter(function(g){ return g.id!==id; });
+        saveState(); renderGoals(); renderToday();
+      });
+    });
+
+    var sWrap = document.getElementById("skillsListWrap"); sWrap.innerHTML="";
+    if(state.skills.length===0){ sWrap.innerHTML = '<p class="empty-hint">'+t("no_skills_yet")+'</p>'; }
+    state.skills.forEach(function(sk){
+      var pct = sk.target>0 ? Math.round((sk.current/sk.target)*100) : 100;
+      pct = Math.max(0, Math.min(100, pct));
+      var linkedCount = linkedHabitsFor(sk.id).length + linkedTasksFor(sk.id).length;
+      var neglected = skillNeglected(sk.id);
+      var row=document.createElement("div"); row.className="skill-row-v2";
+      row.innerHTML = '<div class="mini-ring-wrap">'+miniRingSvg(pct,48,5)+'<span class="mini-ring-pct">'+pct+'%</span></div>'+
+        '<div class="skill-info"><div class="sr-top"><span class="sr-name">'+escapeHtml(sk.name)+'</span><button class="lr-del" data-del-skill="'+sk.id+'">✕</button></div>'+
+        '<div class="sr-top"><span class="sr-meta">'+t("skill_level_from_to").replace("{c}",sk.current).replace("{t}",sk.target).replace("{h}",sk.hours)+'</span><button class="sr-bump" data-bump-skill="'+sk.id+'">+</button></div>'+
+        (linkedCount>0 ? '<div class="sr-top"><span class="sr-meta">'+t("skill_served_by").replace("{n}",linkedCount)+'</span>'+(neglected?'<span class="neglect-badge">'+t("neglect_badge")+'</span>':'')+'</div>' : '')+
+        '</div>';
+      sWrap.appendChild(row);
+    });
+    sWrap.querySelectorAll("[data-bump-skill]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id=b.getAttribute("data-bump-skill");
+        state.skills.forEach(function(sk){ if(sk.id===id && sk.current<sk.target) sk.current++; });
+        saveState(); renderGoals();
+      });
+    });
+    sWrap.querySelectorAll("[data-del-skill]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id=b.getAttribute("data-del-skill");
+        state.skills = state.skills.filter(function(sk){ return sk.id!==id; });
+        state.goals.forEach(function(g){ if(g.skillId===id) g.skillId=null; });
+        state.habits.forEach(function(h){ if(h.skillId===id) h.skillId=null; });
+        state.agenda.forEach(function(i){ if(i.skillId===id) i.skillId=null; });
+        saveState(); renderGoals();
+      });
+    });
+
+    var hWrap = document.getElementById("habitsListWrap"); hWrap.innerHTML="";
+    if(state.habits.length===0){ hWrap.innerHTML = '<p class="empty-hint">'+t("no_habits_yet")+'</p>'; }
+    state.habits.forEach(function(h){
+      var streak = habitStreak(h.id);
+      var row=document.createElement("div"); row.className="habit-row-v2";
+      row.innerHTML = '<div class="hr-top"><span class="habit-tag '+h.type+'">'+t("habit_"+h.type)+'</span><span class="lr-text" style="flex:1;">'+escapeHtml(h.text)+' '+skillTagHtml(h.skillId)+'</span>'+
+        (streak>0? '<span class="streak-badge">🔥 '+streak+'</span>' : '')+
+        '<button class="lr-del" data-del-habit="'+h.id+'">✕</button></div>'+
+        '<div class="hr-bottom">'+weekDotsHtml(h.id)+'</div>';
+      hWrap.appendChild(row);
+    });
+    hWrap.querySelectorAll("[data-del-habit]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var id=b.getAttribute("data-del-habit");
+        state.habits = state.habits.filter(function(h){ return h.id!==id; });
+        delete state.habitsLog[id];
+        saveState(); renderGoals(); renderReviewChecklist(); renderToday();
+      });
+    });
+  }
+  document.getElementById("addGoalBtn").addEventListener("click", function(){
+    var inp=document.getElementById("newGoalInput"); var v=inp.value.trim();
+    if(!v) return;
+    var skillId = document.getElementById("newGoalSkill").value || null;
+    state.goals.push({id:uid(), text:v, sessions:0, skillId:skillId});
+    saveState(); inp.value=""; renderGoals(); renderToday();
+  });
+  document.getElementById("newGoalInput").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addGoalBtn").click(); });
+  document.getElementById("addSkillBtn").addEventListener("click", function(){
+    var inp=document.getElementById("newSkillInput"); var v=inp.value.trim();
+    if(!v) return;
+    state.skills.push({id:uid(), name:v, current:0, target:10, hours:1, sessions:0});
+    saveState(); inp.value=""; renderGoals();
+  });
+  document.getElementById("newSkillInput").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addSkillBtn").click(); });
+  document.getElementById("addHabitBtn").addEventListener("click", function(){
+    var inp=document.getElementById("newHabitInput"); var v=inp.value.trim();
+    if(!v) return;
+    var skillId = document.getElementById("newHabitSkill").value || null;
+    state.habits.push({id:uid(), text:v, type:"build", skillId:skillId});
+    saveState(); inp.value=""; renderGoals(); renderReviewChecklist(); renderToday();
+  });
+  document.getElementById("newHabitInput").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addHabitBtn").click(); });
+
+  /* ================= coach chat ================= */
+  var chatHistory = [];
+  function addBubble(role, text){
+    var win = document.getElementById("chatWindow");
+    var row=document.createElement("div"); row.className="bubble-row"+(role==="me"?" me":"");
+    var av = role==="me" ? "" : '<div class="mini-avatar">R</div>';
+    row.innerHTML = av+'<div class="bubble '+(role==="me"?"me":"coach")+'"></div>';
+    var bubbleEl = row.querySelector(".bubble");
+    bubbleEl.textContent = text;
+    win.appendChild(row);
+    win.scrollTop = win.scrollHeight;
+    return bubbleEl;
+  }
+  document.getElementById("chatSend").addEventListener("click", sendChat);
+  document.getElementById("chatInput").addEventListener("keydown", function(e){ if(e.key==="Enter") sendChat(); });
+  async function sendChat(){
+    var input = document.getElementById("chatInput");
+    var msg = input.value.trim(); if(!msg) return;
+    addBubble("me", msg);
+    chatHistory.push({role:"student", content:msg});
+    input.value="";
+    var personName = state.nickname||state.name||(lang==="ar"?"الطالب":"Them");
+    var historyText = chatHistory.slice(-10).map(function(h){ return (h.role==="student"?(lang==="ar"?personName+": ":"Them: "):(lang==="ar"?"رفيق: ":"Rafiq: "))+h.content; }).join("\n");
+    var prompt = persona()+(lang==="ar"?"\n\nمحادثة حتى الآن:\n":"\n\nConversation so far:\n")+historyText+(lang==="ar"?"\n\nرد رفيق القادم:":"\n\nRafiq's next reply:");
+    var coachBubble = addBubble("coach", "…");
+    var win = document.getElementById("chatWindow");
+    var reply = await askAI(prompt, function(partial){ coachBubble.textContent = partial; win.scrollTop = win.scrollHeight; }, {cache:false});
+    if(!reply){
+      reply = lang==="ar" ? "ما قدرت أتواصل بالذكاء الاصطناعي الحين — جرب ترسل رسالتك مرة ثانية بعد شوي." : "Couldn't reach the AI right now — try sending your message again in a moment.";
+    }
+    coachBubble.textContent = reply;
+    win.scrollTop = win.scrollHeight;
+    chatHistory.push({role:"coach", content:reply});
+  }
+
+  /* ================= nav ================= */
+  document.querySelectorAll(".tab-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var target = btn.getAttribute("data-target");
+      document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      document.querySelectorAll(".screen").forEach(function(s){ s.classList.toggle("active", s.getAttribute("data-screen")===target); });
+    });
+  });
+
+  /* ================= language toggle ================= */
+  function updateLangButtons(){
+    var label = t("lang_switch_to");
+    ["langToggle","langToggleAuth","langToggleOnboard"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.textContent = label;
+    });
+  }
+  function toggleLang(){
+    lang = lang==="ar" ? "en" : "ar";
+    document.getElementById("htmlRoot").setAttribute("lang", lang);
+    document.getElementById("htmlRoot").setAttribute("dir", lang==="ar"?"rtl":"ltr");
+    updateLangButtons();
+    if(!document.getElementById("authScreen").classList.contains("hidden")) renderAuthScreen2();
+    if(!document.getElementById("onboardScreen").classList.contains("hidden")) renderOnboardStep();
+    if(!document.getElementById("appShell").classList.contains("hidden")) renderAll();
+  }
+  document.getElementById("langToggle").addEventListener("click", toggleLang);
+  document.getElementById("langToggleAuth").addEventListener("click", toggleLang);
+  document.getElementById("langToggleOnboard").addEventListener("click", toggleLang);
+
+  function renderAll(){
+    applyStaticText();
+    renderToday();
+    renderTasksOutput();
+    renderReviewChecklist();
+    renderGoals();
+    renderAgendaScreen();
+    renderTodayAgendaSummary();
+  }
+
+  /* ================= init ================= */
+  initAuth();
+})();
+</script>
+</body>
+</html>
